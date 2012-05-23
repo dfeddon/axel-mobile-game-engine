@@ -1,0 +1,140 @@
+package com.choomba.entities 
+{
+	import com.choomba.resource.Resource;
+	
+	import org.axgl.Ax;
+	import org.axgl.AxSprite;
+	import org.axgl.AxVector;
+	import org.axgl.input.AxKey;
+	import org.axgl.particle.AxParticleSystem;
+	
+	/**
+	 * Our player entity that we control in the world.
+	 */
+	public class Player extends AxSprite 
+	{
+		/**
+		 * A timer keeping track of whether (and how long) the player is hurt.
+		 */
+		public var hurtTimer:Number = 0;
+		
+		/**
+		 * Creates a new player.
+		 */
+		public function Player(x:uint, y:uint) 
+		{
+			super(x, y, Resource.PLAYER, 64, 64);
+			
+			addAnimation("stand", [0]);
+			addAnimation("walk", [0, 1, 2, 3, 4, 5, 6, 7, 8], 15);
+			addAnimation("walkS", [27, 28, 29, 30, 31, 32, 33, 34, 35], 15);
+			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 15);
+			/*addAnimation("jump", [7]);
+			addAnimation("fall", [8]);*/
+			animate("stand");
+			
+			// Adjust bounding box
+			//bounds(16, 30, 4, 2);
+			// Add friction
+			/*drag = new AxVector(400, 300);
+			// Add the maximum velocity of our player
+			maxVelocity = new AxVector(150, 600);
+			// Add gravity
+			acceleration.y = 600;*/
+		}
+		
+		override public function update():void 
+		{
+			// If we press UP or W, and we're touching the ground, jump!
+			/*if ((Ax.keys.pressed(AxKey.UP) || Ax.keys.down(AxKey.W)) && isTouching(DOWN)) {
+				velocity.y = -260;
+			}*/
+			
+			// Move left and right using an acceleration of 500
+			if (Ax.keys.down(AxKey.RIGHT) || Ax.keys.down(AxKey.D)) 
+			{
+				//acceleration.x = 500;
+				velocity.x = 100;
+				velocity.y = 0;
+				facing = RIGHT;
+				animate("walk");
+			} 
+			else if (Ax.keys.down(AxKey.LEFT) || Ax.keys.down(AxKey.A)) 
+			{
+				//acceleration.x = -500;
+				velocity.x = -100;
+				velocity.y = 0;
+				facing = LEFT;
+				animate("walk");
+			}
+			else if (Ax.keys.down(AxKey.DOWN))
+			{
+				velocity.x = 0;
+				velocity.y = 100;
+				facing = DOWN;
+				animate("walkS");
+			}
+			else if (Ax.keys.down(AxKey.UP))
+			{
+				velocity.x = 0;
+				velocity.y = -100;
+				facing = UP;
+				animate("walkN");
+			}
+			else 
+			{
+				acceleration.x = 0;
+			}
+			
+			/*if (velocity.y < 0) {
+				animate("jump");
+			} else if (velocity.y > 0) {
+				animate("fall");
+			} else if (velocity.x != 0) {
+				animate("walk");
+			} else {
+				animate("stand");
+			}*/
+			
+			// If we're hurt, change our color to a dark red until hurtTimer has run out
+			if (hurt) {
+				hurtTimer -= Ax.dt;
+				setColor(1, 0.3, 0.3, 0.6);
+			} else {
+				setColor(1, 1, 1, 1);
+			}
+			
+			super.update();
+		}
+		
+		/**
+		 * This is called when we collide with an enemy.
+		 */
+		public function hit(enemy:Entity):void 
+		{
+			// Set our hurt timer
+			hurtTimer = 2;
+			
+			// Push us sideways based on which side of the enemy we were on
+			if (enemy.center.x > center.x) {
+				velocity.x = -200;
+			} else {
+				velocity.x = 200;
+			}
+			
+			// Push us up a bit to make us bounce
+			velocity.y = -100;
+			
+			// Emit the damage particle effect at our current location
+			AxParticleSystem.emit("damage", center.x, center.y);
+		}
+		
+		/**
+		 * Returns whether or not we are hurt, by checking if hurtTimer > 0
+		 */
+		public function get hurt():Boolean 
+		{
+			return hurtTimer > 0;
+		}
+	}
+}
