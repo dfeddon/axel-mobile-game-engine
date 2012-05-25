@@ -1,6 +1,6 @@
 package
 {
-	import Samples.BasicTiledMap;
+	import com.choomba.states.TitleState;
 	
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
@@ -12,7 +12,7 @@ package
 		public function Untitled()
 		{
 			//super(TitleState);
-			super(BasicTiledMap);
+			super(TitleState);
 		}
 	}
 }

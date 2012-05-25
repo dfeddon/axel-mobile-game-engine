@@ -3,6 +3,7 @@ package com.choomba.entities
 	import com.choomba.resource.Resource;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxPoint;
 	import org.axgl.AxSprite;
 	import org.axgl.AxVector;
 	import org.axgl.input.AxKey;
@@ -13,6 +14,7 @@ package com.choomba.entities
 	 */
 	public class Player extends AxSprite 
 	{
+		public var moveToPoint:AxPoint;
 		/**
 		 * A timer keeping track of whether (and how long) the player is hurt.
 		 */
@@ -25,13 +27,12 @@ package com.choomba.entities
 		{
 			super(x, y, Resource.PLAYER, 64, 64);
 			
-			addAnimation("stand", [0]);
+			addAnimation("standE", [8]);
+			addAnimation("standU", [26]);
+			addAnimation("standD", [35]);
 			addAnimation("walk", [0, 1, 2, 3, 4, 5, 6, 7, 8], 15);
 			addAnimation("walkS", [27, 28, 29, 30, 31, 32, 33, 34, 35], 15);
 			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 15);
-			/*addAnimation("jump", [7]);
-			addAnimation("fall", [8]);*/
-			animate("stand");
 			
 			// Adjust bounding box
 			//bounds(16, 30, 4, 2);
@@ -45,56 +46,84 @@ package com.choomba.entities
 		
 		override public function update():void 
 		{
-			// If we press UP or W, and we're touching the ground, jump!
-			/*if ((Ax.keys.pressed(AxKey.UP) || Ax.keys.down(AxKey.W)) && isTouching(DOWN)) {
-				velocity.y = -260;
-			}*/
+			// x and y difference values
+			var xd:int = 0;
+			var yd:int = 0;
+			// facing string
+			var f:String;
 			
-			// Move left and right using an acceleration of 500
-			if (Ax.keys.down(AxKey.RIGHT) || Ax.keys.down(AxKey.D)) 
+			if (moveToPoint) // moving
 			{
-				//acceleration.x = 500;
-				velocity.x = 100;
-				velocity.y = 0;
-				facing = RIGHT;
-				animate("walk");
-			} 
-			else if (Ax.keys.down(AxKey.LEFT) || Ax.keys.down(AxKey.A)) 
-			{
-				//acceleration.x = -500;
-				velocity.x = -100;
-				velocity.y = 0;
-				facing = LEFT;
-				animate("walk");
+				if (moveToPoint.x > x) // moving right
+				{
+					x++;
+					xd = moveToPoint.x - x; // calculate difference between destination x and player x
+					f = "r";
+				}
+				else if (moveToPoint.x < x) // moving left
+				{
+					x--;
+					xd = x - moveToPoint.x; // calculate difference between player x and destination x
+					f = "l";
+				}
+				if (moveToPoint.y > y) // moving down
+				{
+					y++;
+					yd = moveToPoint.y - y; // calculate difference between destination y and player y
+					f = "d";
+				}
+				else if (moveToPoint.y < y) // moving up
+				{
+					y--;
+					yd = y - moveToPoint.y; // calculate difference between player x and destination x
+					f = "u";
+				}
+				if (moveToPoint.x == x && moveToPoint.y == y) // player stopped
+				{
+					// clear player's AxPoint
+					moveToPoint = null;
+					
+					switch(facing)
+					{
+						case RIGHT:
+						case LEFT:
+							animate("standE");
+							break;
+						
+						case UP:
+							animate("standU");
+							break;
+						
+						case DOWN:
+							animate("standD");
+							break;
+					}
+				}
+				else // adjust animation (notably diagnonals) based on x, y differences
+				{
+					if (xd > yd)
+					{
+						if (moveToPoint.x > x)
+							facing = RIGHT;
+						else if (moveToPoint.x < x)
+							facing = LEFT;
+						animate("walk");
+					}
+					else
+					{
+						if (f == "u")
+						{
+							facing = UP;
+							animate("walkN");
+						}
+						else
+						{
+							facing = DOWN;
+							animate("walkS");
+						}
+					}
+				}
 			}
-			else if (Ax.keys.down(AxKey.DOWN))
-			{
-				velocity.x = 0;
-				velocity.y = 100;
-				facing = DOWN;
-				animate("walkS");
-			}
-			else if (Ax.keys.down(AxKey.UP))
-			{
-				velocity.x = 0;
-				velocity.y = -100;
-				facing = UP;
-				animate("walkN");
-			}
-			else 
-			{
-				acceleration.x = 0;
-			}
-			
-			/*if (velocity.y < 0) {
-				animate("jump");
-			} else if (velocity.y > 0) {
-				animate("fall");
-			} else if (velocity.x != 0) {
-				animate("walk");
-			} else {
-				animate("stand");
-			}*/
 			
 			// If we're hurt, change our color to a dark red until hurtTimer has run out
 			if (hurt) {

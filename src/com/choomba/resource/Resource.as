@@ -4,9 +4,11 @@ package com.choomba.resource
 	{
 		[Embed(source = "./assets/images/playerMage.png")] 
 		public static const PLAYER:Class;
-		[Embed(source="Samples/Files/map1.tmx", mimeType="application/octet-stream")]
+		[Embed(source="./assets/maps/map1.tmx", mimeType="application/octet-stream")]
 		public static const map1:Class;
-		[Embed(source="Samples/Files/tiles1.png")]
+		[Embed(source="./assets/maps/tiles1.png")]
 		public static const tiles1:Class;
+		[Embed(source="assets/images/uidrag.png")]
+		public static const uidrag:Class;
 	}
 }

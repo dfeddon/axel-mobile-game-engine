@@ -314,7 +314,7 @@ package org.axgl {
 		 * @param event The touch event.
 		 */
 		private function onTouchBegin(event:TouchEvent):void {
-			trace("TOUCH BEGIN");
+			//trace("TOUCH BEGIN");
 			// TODO: Implement actual touch controls
 			// For now, touching controls mouse x/y
 			mouse.update(event.stageX, event.stageY);
@@ -326,7 +326,7 @@ package org.axgl {
 		 * @param event The touch event.
 		 */
 		private function onTouchMove(event:TouchEvent):void {
-			trace("TOUCH MOVE");
+			//trace("TOUCH MOVE");
 			// TODO: Implement actual touch controls
 			// For now, touching controls mouse x/y
 			mouse.update(event.stageX, event.stageY);
@@ -338,7 +338,7 @@ package org.axgl {
 		 * @param event The touch event.
 		 */
 		private function onTouchEnd(event:TouchEvent):void {
-			trace("TOUCH END");
+			//trace("TOUCH END");
 			// TODO: Implement actual touch controls
 			// For now, touching controls mouse x/y
 			mouse.update(event.stageX, event.stageY);

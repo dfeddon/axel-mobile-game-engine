@@ -9,6 +9,7 @@ package com.choomba.tiled
 	import net.pixelpracht.tmx.TmxLayer;
 	import net.pixelpracht.tmx.TmxMap;
 	
+	import org.axgl.tilemap.AxTile;
 	import org.axgl.tilemap.AxTilemap;
 	
 	public class DfTiledMap extends AxTiledMap
@@ -49,6 +50,8 @@ package com.choomba.tiled
 				}
 				
 			}
+			var test:AxTile = lay.getTile(54);
+			trace('testing');
 		}
 		
 		private function bitmapDataToClass(bitmapData:BitmapData):Class

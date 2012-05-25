@@ -1,8 +1,9 @@
 package com.choomba.util
 {
 	/**
-	 * A utility class where we specify the size of our world and tiles. By doing this, and using these constants in our game,
-	 * we could change the size of our tiles without having to go through and change things throughout our entire game.
+	 * A utility class where we specify the size of our world and tiles. By doing this, 
+	 * and using these constants in our game, we could change the size of our tiles 
+	 * without having to go through and change things throughout our entire game.
 	 */
 	public class World 
 	{

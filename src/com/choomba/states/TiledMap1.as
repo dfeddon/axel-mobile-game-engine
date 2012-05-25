@@ -1,22 +1,28 @@
-package Samples
+package com.choomba.states
 {
 	import com.Ammarz.AxTiledMap.TilesetBank;
 	import com.choomba.entities.Player;
 	import com.choomba.resource.Resource;
 	import com.choomba.tiled.DfTiledMap;
+	import com.choomba.util.Particle;
+	import com.choomba.util.World;
 	
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.ui.Keyboard;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxGroup;
+	import org.axgl.AxPoint;
+	import org.axgl.AxRect;
 	import org.axgl.AxState;
 	import org.axgl.input.AxMouseButton;
+	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxColor;
 	import org.axgl.tilemap.AxTile;
 
 	
-	public final class BasicTiledMap extends AxState
+	public final class TiledMap1 extends AxState
 	{
 		/*
 			[Read this if you use AIR 3.2]
@@ -30,20 +36,22 @@ package Samples
 		//embed sample related media ...
 		
 		//the xml file containing map data
-		[Embed(source="Samples/Files/map1.tmx", mimeType="application/octet-stream")]
-		private var mapXML:Class;
+		//[Embed(source="Samples/Files/map1.tmx", mimeType="application/octet-stream")]
+		protected var mapXML:Class = Resource.map1;
 		
 		//tileset
-		[Embed(source="Samples/Files/tiles1.png")]
-		private var tiles1:Class;
+		//[Embed(source="Samples/Files/tiles1.png")]
+		protected var tiles1:Class = Resource.tiles1;
 		
 		private var _map:DfTiledMap;
 		
 		private var _screenHalf:Number;
 		
 		public var player:Player;
+		protected var tileset:String = "tiles1";
+		public var particles:AxGroup = new AxGroup;
 		
-		public function BasicTiledMap()
+		public function TiledMap1()
 		{
 			super();
 		}
@@ -51,6 +59,10 @@ package Samples
 		override public function create():void
 		{
 			super.create();
+			
+			// Continue to update and draw this state when it's not the active state
+			persistantUpdate = true;
+			persistantDraw = true;
 			
 			Ax.background = AxColor.fromHex(0x000000);
 			
@@ -64,7 +76,7 @@ package Samples
 			
 			var map:Class = Resource.map1;
 			var tiles:Class = Resource.tiles1;
-			var tileset:String = "tiles1";
+			//var tileset:String = "tiles1";
 			
 			var bank:TilesetBank = new TilesetBank();
 			bank.addTileset(tileset, tiles);
@@ -90,13 +102,50 @@ package Samples
 			player = new Player(10, 10);
 			this.add(player);
 			
+			// particles
+			this.add(particles);
+			Particle.initialize();
+			
+			// add UI layer
+			Ax.pushState(new UIState);
+			
+			// setup camera
+			Ax.camera.follow(player);
+			Ax.camera.bounds = new AxRect(0, 0, World.WIDTH, World.HEIGHT);
+			
+			// listeners
 			Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
+			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
 		}
 		
 		private function clickHandler(e:MouseEvent):void
 		{
 			trace('clicked');
+			trace(':', e.localX, e.localY);
+		}
+		
+		private function touchEndHandler(e:TouchEvent):void
+		{
+			trace('touch end', Ax.mouse.update(e.stageX, e.stageY));
+			
+			if (UIState.draggerActive)
+			{
+				trace('->', UIState.dragger);
+				//player.y = 100;
+				UIState.deactivate();
+				
+				AxParticleSystem.emit("enemy-hit", e.stageX - 50, e.stageY - 50);
+			}
+			else
+			{
+				// get touched coordinates
+				var moveX:int = Math.floor((e.stageX + Ax.camera.x) / World.TILE_SIZE) * World.TILE_SIZE;// + (World.TILE_SIZE / 2);
+				var moveY:int = Math.floor((e.stageY + Ax.camera.y) / World.TILE_SIZE) * World.TILE_SIZE;// + (World.TILE_SIZE / 2);
+				
+				// move player to coordinates
+				player.moveToPoint = new AxPoint(moveX, moveY);
+			}
 		}
 		
 		private function tapHandler(e:TouchEvent):void
@@ -108,36 +157,6 @@ package Samples
 		override public function update():void
 		{
 			super.update();
-			
-			//control camera with keyboard
-			if (Ax.keys.down(Keyboard.RIGHT))
-			{
-				Ax.camera.x+= 10;
-			}
-			else if (Ax.keys.down(Keyboard.LEFT))
-			{
-				Ax.camera.x -= 10;
-			}
-			else if (Ax.keys.down(Keyboard.DOWN))
-			{
-				Ax.camera.y += 10;
-			}
-			else if (Ax.keys.down(Keyboard.UP))
-			{
-				Ax.camera.y -= 10;
-			}
-			
-			//control camera with mouse-touch
-			if (Ax.mouse.down(AxMouseButton.LEFT))
-			{
-				if (Ax.mouse.screen.x > _screenHalf)
-				{
-					Ax.camera.x+= 10;
-				}else
-				{
-					Ax.camera.x -= 10;
-				}
-			}
 		}
 		
 		

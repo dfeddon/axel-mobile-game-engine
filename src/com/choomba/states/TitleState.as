@@ -1,4 +1,4 @@
-package {
+package com.choomba.states {
 	import org.axgl.Ax;
 	import org.axgl.AxButton;
 	import org.axgl.AxState;
@@ -9,6 +9,8 @@ package {
 	{
 		override public function create():void 
 		{
+			super.create();
+			
 			// Don't update or draw this state when it's not the active state
 			persistantUpdate = false;
 			persistantDraw = false;
@@ -25,13 +27,18 @@ package {
 			btn.text("Start");
 			btn.onClick(function():void
 				{
-					Ax.pushState(new GameState);
+					Ax.pushState(new TiledMap1);
 					//Ax.popState();
 				}
 			);
 			
 			// add it
 			add(btn);
+		}
+		
+		override public function update():void
+		{
+			super.update();
 		}
 	}
 }
