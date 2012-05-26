@@ -1,7 +1,7 @@
 package com.choomba.util
 {
+	import com.choomba.components.ChStateMap;
 	import com.choomba.resource.Resource;
-	import com.choomba.states.TiledMap1;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxState;
@@ -27,8 +27,8 @@ package com.choomba.util
 			diamond.endScale = new AxRange(2, 4);
 			diamond.color(new AxColor(0.3, 0.3, 0.3), new AxColor(1, 1, 1), new AxColor(0.3, 0.3, 0.3), new AxColor(1, 1, 1));
 			(Ax.state as GameState).particles.add(AxParticleSystem.register(diamond));
-			
-			var powerup:AxParticleEffect = new AxParticleEffect("powerup", Resource.PARTICLE_DIAMOND, 5);
+			*/
+			var powerup:AxParticleEffect = new AxParticleEffect("powerup", Resource.aslot, 5);
 			powerup.x = new AxRange(0, 25);
 			powerup.y = new AxRange(0, 25);
 			powerup.xVelocity = new AxRange(-30, 30);
@@ -37,18 +37,18 @@ package com.choomba.util
 			powerup.amount = 50;
 			powerup.blend = AxBlendMode.PARTICLE;
 			powerup.color(new AxColor(0, 0, 0), new AxColor(1, 1, 1), new AxColor(0, 0, 0), new AxColor(1, 1, 1));
-			(Ax.state as GameState).particles.add(AxParticleSystem.register(powerup));*/
+			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(powerup));
 			
-			var triangle:AxParticleEffect = new AxParticleEffect("enemy-hit", Resource.uidrag, 20);
+			var triangle:AxParticleEffect = new AxParticleEffect("enemy-hit", Resource.aslot, 20);
 			triangle.xVelocity = new AxRange(-30, 30);
 			triangle.yVelocity = new AxRange(-30, 30);
 			triangle.lifetime = new AxRange(0.5, 1.0);
 			triangle.amount = 10;
 			triangle.blend = AxBlendMode.PARTICLE;
 			triangle.color(new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5), new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5));
-			(Ax.state as TiledMap1).particles.add(AxParticleSystem.register(triangle));
+			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(triangle));
 			
-			/*var playerHit:AxParticleEffect = new AxParticleEffect("player-hit", Resource.PARTICLE_DIAMOND, 10);
+			var playerHit:AxParticleEffect = new AxParticleEffect("player-hit", Resource.aslot, 10);
 			playerHit.xVelocity = new AxRange(-30, 30);
 			playerHit.yVelocity = new AxRange(-30, 30);
 			playerHit.lifetime = new AxRange(0.5, 1.5);
@@ -56,9 +56,9 @@ package com.choomba.util
 			playerHit.amount = 100;
 			playerHit.blend = AxBlendMode.PARTICLE;
 			playerHit.color(new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5), new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5));
-			(Ax.state as GameState).particles.add(AxParticleSystem.register(playerHit));
+			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(playerHit));
 			
-			var circle:AxParticleEffect = new AxParticleEffect("circle", Resource.PARTICLE_CIRCLE, 5);
+			var circle:AxParticleEffect = new AxParticleEffect("circle", Resource.aslot, 5);
 			circle.xVelocity = new AxRange(-30, 30);
 			circle.yVelocity = new AxRange(-50, -20);
 			circle.yAcceleration = new AxRange(-200, -50);
@@ -66,7 +66,7 @@ package com.choomba.util
 			circle.amount = 20;
 			circle.blend = AxBlendMode.PARTICLE;
 			circle.color(new AxColor(0.5, 0.5, 0.3), new AxColor(1, 1, 0.5), new AxColor(0.5, 0.5, 0.3), new AxColor(1, 1, 0.5));
-			(Ax.state as GameState).particles.add(AxParticleSystem.register(circle));*/
+			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(circle));
 		}
 	}
 }

@@ -15,13 +15,13 @@ package com.choomba.states
 		private static const DRAG_H:int = 150;
 		private static const DRAG_OFFSET:int = 25;
 		
-		public static var draggerActive:Boolean = false;
-		public static var dragger:String;
+		public static var slotActive:Boolean = false;
+		public static var slotSelected:String;
 		
-		private var uidragTL:AxSprite;
-		private var uidragTR:AxSprite;
-		private var uidragBL:AxSprite;
-		private var uidragBR:AxSprite;
+		private var aslotTL:AxSprite;
+		private var aslotTR:AxSprite;
+		private var aslotBL:AxSprite;
+		private var aslotBR:AxSprite;
 		
 		public function UIState()
 		{
@@ -39,62 +39,62 @@ package com.choomba.states
 			// create background
 			Ax.background = new AxColor(0, 0, 0);
 			
-			uidragTL = new AxSprite(-DRAG_OFFSET, -DRAG_OFFSET, Resource.uidrag);
-			uidragTL.scroll.x = uidragTL.scroll.y = 0;
-			uidragTL.stationary = true;
-			add(uidragTL);
+			aslotTL = new AxSprite(-DRAG_OFFSET, -DRAG_OFFSET, Resource.aslot);
+			aslotTL.scroll.x = aslotTL.scroll.y = 0;
+			aslotTL.stationary = true;
+			add(aslotTL);
 			
-			uidragTR = new AxSprite(Ax.stage2D.stage.fullScreenWidth - DRAG_W + DRAG_OFFSET, -DRAG_OFFSET, Resource.uidrag);
-			uidragTR.scroll.x = uidragTR.scroll.y = 0;
-			uidragTL.stationary = true;
-			add(uidragTR);
+			aslotTR = new AxSprite(Ax.stage2D.stage.fullScreenWidth - DRAG_W + DRAG_OFFSET, -DRAG_OFFSET, Resource.aslot);
+			aslotTR.scroll.x = aslotTR.scroll.y = 0;
+			aslotTL.stationary = true;
+			add(aslotTR);
 
-			uidragBL = new AxSprite(-DRAG_OFFSET, Ax.stage2D.stage.fullScreenHeight - DRAG_H + DRAG_OFFSET, Resource.uidrag);
-			uidragBL.scroll.x = uidragBL.scroll.y = 0;
-			uidragTL.stationary = true;
-			add(uidragBL);
+			aslotBL = new AxSprite(-DRAG_OFFSET, Ax.stage2D.stage.fullScreenHeight - DRAG_H + DRAG_OFFSET, Resource.aslot);
+			aslotBL.scroll.x = aslotBL.scroll.y = 0;
+			aslotTL.stationary = true;
+			add(aslotBL);
 
-			uidragBR = new AxSprite(Ax.stage2D.stage.fullScreenWidth - DRAG_W + DRAG_OFFSET, Ax.stage2D.stage.fullScreenHeight - DRAG_H + DRAG_OFFSET, Resource.uidrag);
-			uidragBR.scroll.x = uidragBR.scroll.y = 0;
-			uidragTL.stationary = true;
-			add(uidragBR);
+			aslotBR = new AxSprite(Ax.stage2D.stage.fullScreenWidth - DRAG_W + DRAG_OFFSET, Ax.stage2D.stage.fullScreenHeight - DRAG_H + DRAG_OFFSET, Resource.aslot);
+			aslotBR.scroll.x = aslotBR.scroll.y = 0;
+			aslotTL.stationary = true;
+			add(aslotBR);
 		}
 		
 		public static function deactivate():void
 		{
 			trace('deactivating ui');
-			if (draggerActive)
-				draggerActive = false;
+			if (slotActive)
+				slotActive = false;
 		}
 		
 		override public function update():void
 		{
 			super.update();
 			
-			//trace(uidragTL.
-			if (uidragTL.held())
+			//trace(aslotTL.
+			if (aslotTL.held())
 			{
-				trace('!!!!!!!!!dragger TL held!');
-				draggerActive = true;
-				dragger = "TL";
+				trace('!!!!!!!!!slotSelected TL held!');
+				slotActive = true;
+				slotSelected = "TL";
 			}
-			else if (uidragTR.held())
+			else if (aslotTR.held())
 			{
-				trace('!!!!!!!!!dragger TR held!');
-				draggerActive = true;
-				dragger = "TR";
+				trace('!!!!!!!!!slotSelected TR held!');
+				slotActive = true;
+				slotSelected = "TR";
 			}
-			else if (uidragBL.held())
+			else if (aslotBL.held())
 			{
-				trace('!!!!!!!!!dragger BL held!');
-				draggerActive = true;
-				dragger = "BL";
+				trace('!!!!!!!!!slotSelected BL held!');
+				slotActive = true;
+				slotSelected = "BL";
 			}
-			else if (uidragBR.held())
+			else if (aslotBR.held())
 			{
-				trace('!!!!!!!!!dragger BR held!');
-				draggerActive = true;
-				dragger = "BR";
+				trace('!!!!!!!!!slotSelected BR held!');
+				slotActive = true;
+				slotSelected = "BR";
 			}
 		}
 	}

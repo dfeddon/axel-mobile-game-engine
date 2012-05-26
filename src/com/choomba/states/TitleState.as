@@ -27,7 +27,7 @@ package com.choomba.states {
 			btn.text("Start");
 			btn.onClick(function():void
 				{
-					Ax.pushState(new TiledMap1);
+					Ax.pushState(new Map1);
 					//Ax.popState();
 				}
 			);

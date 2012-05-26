@@ -2,6 +2,8 @@ package com.choomba.tiled
 {
 	import com.Ammarz.AxTiledMap.AxTiledMap;
 	import com.Ammarz.AxTiledMap.TilesetBank;
+	import com.choomba.components.ChStateMap;
+	import com.choomba.util.World;
 	
 	import flash.display.BitmapData;
 	import flash.utils.getQualifiedClassName;
@@ -9,12 +11,18 @@ package com.choomba.tiled
 	import net.pixelpracht.tmx.TmxLayer;
 	import net.pixelpracht.tmx.TmxMap;
 	
+	import org.axgl.Ax;
+	import org.axgl.collision.AxCollisionGroup;
+	import org.axgl.collision.AxGrid;
 	import org.axgl.tilemap.AxTile;
 	import org.axgl.tilemap.AxTilemap;
 	
 	public class DfTiledMap extends AxTiledMap
 	{
 		private var bitmapClasses:Array = [B0];
+		
+		//public static var wallLayer:TmxLayer;
+		//public static var wallcollider:AxCollisionGroup;
 		
 		public function DfTiledMap(x:Number=0, y:Number=0)
 		{
@@ -40,11 +48,19 @@ package com.choomba.tiled
 				tlay = _tmx.getLayerByIndex(i);
 				if (tlay.tilesetName != null)
 				{
+					trace('adding layer', tlay.name);
+					if (tlay.name == 'walls')
+					{
+						//Ax.collide(ChStateMap.player, tlay);
+						//wallLayer = tlay;
+						//wallcollider = new AxGrid(World.WIDTH, World.HEIGHT);
+					}
 					lay = new AxTilemap();
 					gfx = tilesetBank.getTileSet(tlay.tilesetName);
 					lay.build(tlay.toCsv(),bitmapDataToClass(gfx),64,64);
 					add(lay);
-				}else
+				}
+				else
 				{
 					trace("Layer: " + tlay.name + " seems to be empty ... or something went wrong!");
 				}
