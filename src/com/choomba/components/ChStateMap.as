@@ -9,15 +9,14 @@ package com.choomba.components
 	import com.choomba.util.TileUtils;
 	import com.choomba.util.World;
 	
-	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
-	import flash.ui.Keyboard;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxEntity;
 	import org.axgl.AxGroup;
 	import org.axgl.AxPoint;
 	import org.axgl.AxRect;
+	import org.axgl.AxSprite;
 	import org.axgl.AxState;
 	import org.axgl.input.AxMouseButton;
 	import org.axgl.particle.AxParticleSystem;
@@ -43,8 +42,10 @@ package com.choomba.components
 		protected var map:Class;// = Resource.map1;
 		protected var tilesetSrc:Class;// = Resource.tilesetSrc;
 		protected var tilesetName:String;// = "tilesetSrc";
+		protected var bg:Class;
+		protected var bgScroll:Boolean = true;
 		protected var debug:Boolean = true;
-		protected var playerStart:Array = [0, 0];
+		protected var playerStart:AxPoint;// = new Point(0, 0);//:Array = [0, 0];
 		
 		private var _map:DfTiledMap;
 		
@@ -67,7 +68,11 @@ package com.choomba.components
 			persistantUpdate = true;
 			persistantDraw = true;
 			
-			Ax.background = AxColor.fromHex(0x000000);
+			var background:AxSprite = new AxSprite(0, 0, bg);
+			if (!bgScroll)
+				background.scroll.x = background.scroll.y = 0;
+			add(background);
+			//Ax.background = AxColor.fromHex(0x000000);
 			
 			_map = new DfTiledMap();
 			
@@ -101,7 +106,7 @@ package com.choomba.components
 			
 			//
 			// Create our player
-			var pa:AxPoint = TileUtils.tileToCoord(playerStart[0], playerStart[1]);
+			var pa:AxPoint = TileUtils.tileToCoord(playerStart.x, playerStart.y);
 			player = new Player(pa.x, pa.y);
 			this.add(player);
 			

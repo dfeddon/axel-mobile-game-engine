@@ -19,11 +19,6 @@
    </properties>
   </tile>
  </tileset>
- <layer name="floor" width="25" height="25">
-  <data encoding="base64" compression="zlib">
-   eJzt0qkSg1AQRNH3iyzBAyEeEvCsPgt4CPCdXBc3FUbPrTqmdXvOOR8BQlwQwTu5S8VIkOKKDDfFLpWjwB0PlKgUu1SNBi069BgUu9QTL7zxwYhJsUvNWPDFig27Ypc6+x/7lf3qn19ZlmVZvw6wYGg1
-  </data>
- </layer>
  <layer name="scenery" width="25" height="25">
   <data encoding="base64" compression="zlib">
    eJxjYBgFtASKaDStgBKNzaeXP0bBKBgFo2AUjIJRQBwAADd3AKc=
@@ -39,7 +34,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYANiViiNjpEBNnls6tABPnlsdpBqBjZ5YSgtSkM7lKG0KgPxYUJJWBELKI0PWvuDVvFBKzuITffk5o9RMApGwSgYBaOAHAAAUv0B3w==
+   eJxjZGBgYANiViiNjpEBNnls6tABPnlsdpBqxkDZoYwmR0yYUOIPYgGlYUVrfwy1OCc23ZObP0bBKBgFo2AUjAJyAAC0GAGS
   </data>
  </layer>
 </map>

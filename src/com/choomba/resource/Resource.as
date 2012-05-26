@@ -11,6 +11,8 @@ package com.choomba.resource
 		public static const map1:Class;
 		[Embed(source="./assets/maps/tiles1.png")]
 		public static const tiles1:Class;
+		[Embed(source="./assets/images/bgMap1.jpg")]
+		public static const bg1:Class;
 		
 		/////////////////////////////////////////
 		// UI

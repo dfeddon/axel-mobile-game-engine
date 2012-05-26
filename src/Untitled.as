@@ -1,5 +1,6 @@
 package
 {
+	import com.choomba.states.Map1;
 	import com.choomba.states.TitleState;
 	
 	import flash.events.MouseEvent;
@@ -12,7 +13,7 @@ package
 		public function Untitled()
 		{
 			//super(TitleState);
-			super(TitleState);
+			super(Map1);
 		}
 	}
 }
