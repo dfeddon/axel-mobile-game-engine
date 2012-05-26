@@ -34,18 +34,13 @@ package com.choomba.components
 		This is not an issue when using AIR 3.3
 		*/
 		
-		
-		//embed sample related media ...
-		
-		//the xml file containing map data
-		//[Embed(source="Samples/Files/map1.tmx", mimeType="application/octet-stream")]
-		protected var map:Class;// = Resource.map1;
-		protected var tilesetSrc:Class;// = Resource.tilesetSrc;
-		protected var tilesetName:String;// = "tilesetSrc";
+		protected var map:Class;
+		protected var tilesetSrc:Class;
+		protected var tilesetName:String;
 		protected var bg:Class;
 		protected var bgScroll:Boolean = true;
 		protected var debug:Boolean = true;
-		protected var playerStart:AxPoint;// = new Point(0, 0);//:Array = [0, 0];
+		protected var playerStart:AxPoint;
 		
 		private var _map:DfTiledMap;
 		
@@ -78,10 +73,10 @@ package com.choomba.components
 			
 			/*
 			create a tile bank which should hold all the tilesets used in maps
-			though currently using multiple tilesets in a map will cause rendering issues, I'll be looking into them later
-			for now, just use one tileset for all the layers in a map
+			though currently using multiple tilesets in a map will cause rendering issues, 
+			I'll be looking into them later for now, just use one tileset for all the 
+			layers in a map
 			*/
-			
 			var bank:TilesetBank = new TilesetBank();
 			bank.addTileset(tilesetName, tilesetSrc);
 			
@@ -101,7 +96,8 @@ package com.choomba.components
 				Ax.debugger.heartbeat();
 			}
 			
-			// precalculate the screen half width for later use for touch based control on mobile devices
+			// precalculate the screen half width for later use for touch based control 
+			// on mobile devices
 			_screenHalf = Ax.stage2D.stageWidth / 2;
 			
 			//
@@ -110,7 +106,7 @@ package com.choomba.components
 			player = new Player(pa.x, pa.y);
 			this.add(player);
 			
-			// particles
+			// init particle fx (must be done before adding UI state
 			this.add(particles);
 			Particle.initialize();
 			
@@ -134,9 +130,9 @@ package com.choomba.components
 		
 		private function touchEndHandler(e:TouchEvent):void
 		{
-			trace('touch end');
+			trace('touch end', e.stageX, e.stageY, UIState.slotActive);
 			
-			Ax.mouse.update(e.stageX, e.stageY);
+			//Ax.mouse.update(e.stageX, e.stageY);
 			
 			if (UIState.slotActive) // ability dragged from ability slot
 			{
