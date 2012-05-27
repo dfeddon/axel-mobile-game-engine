@@ -155,19 +155,19 @@ package com.choomba.components
 				switch(ui.slotSelected)
 				{
 					case "TL":
-						AxParticleSystem.emit("poison", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
+						AxParticleSystem.emit("poison", touchPoint.x, touchPoint.y);
 						break;
 					
 					case "BL":
-						AxParticleSystem.emit("fireball", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
+						AxParticleSystem.emit("fireball", touchPoint.x, touchPoint.y);
 						break;
 					
 					case "TR":
-						AxParticleSystem.emit("flameburst", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
+						AxParticleSystem.emit("flameburst", touchPoint.x, touchPoint.y);
 						break;
 					
 					case "BR":
-						AxParticleSystem.emit("vapor", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
+						AxParticleSystem.emit("vapor", touchPoint.x, touchPoint.y);
 						break;
 
 				}
