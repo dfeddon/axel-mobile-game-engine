@@ -21,12 +21,12 @@
  </tileset>
  <layer name="scenery" width="25" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFtASKaDStgBKNzaeXP0bBKBgFo2AUjIJRQBwAADd3AKc=
+   eJxjYBgFtAaKdDBfiU72jIJRMApGwSgYBaNgcAAAN3cApw==
   </data>
  </layer>
  <layer name="foreground" width="25" height="25">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF5ABhIBYBYlEi1BqRaYcyEKsAsSoBdSZQ2phMe4gFhjQ2fxSMglEwCkbBKBgFxAMAxqkBcw==
+   eJxjYKAfEANicSCWAGJJGtmhBsTqQKwBxJpEqDeikTvoBUzQ+MYD4grqAcOBdsAoGAWjYBSMglEwRAAARyUBxw==
   </data>
  </layer>
  <layer name="walls" width="25" height="25">
@@ -34,7 +34,7 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYANiViiNjpEBNnls6tABPnlsdpBqxkDZoYwmR0yYUOIPYgGlYUVrfwy1OCc23ZObP0bBKBgFo2AUjAJyAAC0GAGS
+   eJxjY2BgYKMSxgUIyRFjBjHmDHc7SAGD2R9DzQ5a549RMApGwSgYBaOAHAAAaDYByQ==
   </data>
  </layer>
 </map>

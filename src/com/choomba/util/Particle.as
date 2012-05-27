@@ -28,7 +28,7 @@ package com.choomba.util
 			diamond.color(new AxColor(0.3, 0.3, 0.3), new AxColor(1, 1, 1), new AxColor(0.3, 0.3, 0.3), new AxColor(1, 1, 1));
 			(Ax.state as GameState).particles.add(AxParticleSystem.register(diamond));
 			*/
-			var powerup:AxParticleEffect = new AxParticleEffect("powerup", Resource.aslot, 5);
+			var powerup:AxParticleEffect = new AxParticleEffect("fireball", Resource.fire, 5);
 			powerup.x = new AxRange(0, 25);
 			powerup.y = new AxRange(0, 25);
 			powerup.xVelocity = new AxRange(-30, 30);
@@ -39,16 +39,16 @@ package com.choomba.util
 			powerup.color(new AxColor(0, 0, 0), new AxColor(1, 1, 1), new AxColor(0, 0, 0), new AxColor(1, 1, 1));
 			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(powerup));
 			
-			var triangle:AxParticleEffect = new AxParticleEffect("enemy-hit", Resource.aslot, 20);
+			var triangle:AxParticleEffect = new AxParticleEffect("poison", Resource.fireball, 40);
 			triangle.xVelocity = new AxRange(-30, 30);
 			triangle.yVelocity = new AxRange(-30, 30);
-			triangle.lifetime = new AxRange(0.5, 1.0);
-			triangle.amount = 10;
+			triangle.lifetime = new AxRange(0.5, 2.5);
+			triangle.amount = 30;
 			triangle.blend = AxBlendMode.PARTICLE;
 			triangle.color(new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5), new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5));
 			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(triangle));
 			
-			var playerHit:AxParticleEffect = new AxParticleEffect("player-hit", Resource.aslot, 10);
+			var playerHit:AxParticleEffect = new AxParticleEffect("flameburst", Resource.fire, 10);
 			playerHit.xVelocity = new AxRange(-30, 30);
 			playerHit.yVelocity = new AxRange(-30, 30);
 			playerHit.lifetime = new AxRange(0.5, 1.5);
@@ -58,7 +58,7 @@ package com.choomba.util
 			playerHit.color(new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5), new AxColor(0.5, 0.3, 0.3), new AxColor(1, 0.5, 0.5));
 			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(playerHit));
 			
-			var circle:AxParticleEffect = new AxParticleEffect("circle", Resource.aslot, 5);
+			var circle:AxParticleEffect = new AxParticleEffect("vapor", Resource.blueflame, 5);
 			circle.xVelocity = new AxRange(-30, 30);
 			circle.yVelocity = new AxRange(-50, -20);
 			circle.yAcceleration = new AxRange(-200, -50);

@@ -9,6 +9,7 @@ package com.choomba.components
 	import com.choomba.util.TileUtils;
 	import com.choomba.util.World;
 	
+	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	
 	import org.axgl.Ax;
@@ -41,6 +42,7 @@ package com.choomba.components
 		protected var bgScroll:Boolean = true;
 		protected var debug:Boolean = true;
 		protected var playerStart:AxPoint;
+		protected var ui:UIState;
 		
 		private var _map:DfTiledMap;
 		
@@ -63,11 +65,13 @@ package com.choomba.components
 			persistantUpdate = true;
 			persistantDraw = true;
 			
+			stationary = true;
+			
+			//Ax.background = AxColor.fromHex(0x000000);
 			var background:AxSprite = new AxSprite(0, 0, bg);
 			if (!bgScroll)
 				background.scroll.x = background.scroll.y = 0;
 			add(background);
-			//Ax.background = AxColor.fromHex(0x000000);
 			
 			_map = new DfTiledMap();
 			
@@ -111,7 +115,8 @@ package com.choomba.components
 			Particle.initialize();
 			
 			// add UI layer
-			Ax.pushState(new UIState);
+			ui = new UIState();
+			Ax.pushState(ui);
 			
 			// setup camera
 			Ax.camera.follow(player);
@@ -120,6 +125,7 @@ package com.choomba.components
 			// listeners
 			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			//Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
+			Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
 		}
 		
@@ -128,41 +134,48 @@ package com.choomba.components
 			trace('clicked', e.localX, e.localY);
 		}*/
 		
+		private function mouseDownHandler(e:MouseEvent):void
+		{
+		}
+		
 		private function touchEndHandler(e:TouchEvent):void
 		{
-			trace('touch end', e.stageX, e.stageY, UIState.slotActive);
+			trace('touch end', e.stageX, e.stageY, ui.slotActive);
 			
-			//Ax.mouse.update(e.stageX, e.stageY);
+			// convert touch coordinates to center point of nearest tile
+			var touchPoint:AxPoint = TileUtils.touchToPoint(e.stageX, e.stageY);
 			
-			if (UIState.slotActive) // ability dragged from ability slot
+			Ax.mouse.update(touchPoint.x, touchPoint.y);
+			
+			if (ui.slotActive) // ability dragged from ability slot
 			{
-				trace('ability slot ->', UIState.slotSelected);
-				UIState.deactivate();
+				trace('ability slot ->', ui.slotSelected);
+				ui.slotActive = false;
 				
-				switch(UIState.slotSelected)
+				switch(ui.slotSelected)
 				{
 					case "TL":
-						AxParticleSystem.emit("enemy-hit", e.stageX - 50, e.stageY - 50);
+						AxParticleSystem.emit("poison", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
 						break;
 					
 					case "BL":
-						AxParticleSystem.emit("powerup", e.stageX - 50, e.stageY - 50);
+						AxParticleSystem.emit("fireball", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
 						break;
 					
 					case "TR":
-						AxParticleSystem.emit("player-hit", e.stageX - 50, e.stageY - 50);
+						AxParticleSystem.emit("flameburst", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
 						break;
 					
 					case "BR":
-						AxParticleSystem.emit("circle", e.stageX - 50, e.stageY - 50);
+						AxParticleSystem.emit("vapor", touchPoint.x + Ax.camera.x, touchPoint.y + Ax.camera.y);
 						break;
 
 				}
 			}
 			else
 			{
-				// move player to coordinates
-				player.moveToPoint = TileUtils.touchToPoint(e.stageX, e.stageY);
+				// move player to tile
+				player.moveToPoint = touchPoint;
 			}
 		}
 		
@@ -175,7 +188,6 @@ package com.choomba.components
 		override public function update():void
 		{
 			super.update();
-			
 			//Ax.collide(player, DfTiledMap.wallLayer, testing, DfTiledMap.wallcollider);
 		}
 		

@@ -50,7 +50,7 @@ package com.choomba.entities
 			var xd:int = 0;
 			var yd:int = 0;
 			// facing string
-			var f:String;
+			//var f:String;
 			
 			if (moveToPoint) // moving
 			{
@@ -58,25 +58,25 @@ package com.choomba.entities
 				{
 					x++;
 					xd = moveToPoint.x - x; // calculate difference between destination x and player x
-					f = "r";
+					//f = "r";
 				}
 				else if (moveToPoint.x < x) // moving left
 				{
 					x--;
 					xd = x - moveToPoint.x; // calculate difference between player x and destination x
-					f = "l";
+					//f = "l";
 				}
 				if (moveToPoint.y > y) // moving down
 				{
 					y++;
 					yd = moveToPoint.y - y; // calculate difference between destination y and player y
-					f = "d";
+					//f = "d";
 				}
 				else if (moveToPoint.y < y) // moving up
 				{
 					y--;
 					yd = y - moveToPoint.y; // calculate difference between player x and destination x
-					f = "u";
+					//f = "u";
 				}
 				if (moveToPoint.x == x && moveToPoint.y == y) // player stopped
 				{
@@ -111,7 +111,7 @@ package com.choomba.entities
 					}
 					else
 					{
-						if (f == "u")
+						if (moveToPoint.y < y)
 						{
 							facing = UP;
 							animate("walkN");
@@ -126,12 +126,12 @@ package com.choomba.entities
 			}
 			
 			// If we're hurt, change our color to a dark red until hurtTimer has run out
-			if (hurt) {
+			/*if (hurt) {
 				hurtTimer -= Ax.dt;
 				setColor(1, 0.3, 0.3, 0.6);
 			} else {
 				setColor(1, 1, 1, 1);
-			}
+			}*/
 			
 			super.update();
 		}
@@ -139,7 +139,7 @@ package com.choomba.entities
 		/**
 		 * This is called when we collide with an enemy.
 		 */
-		public function hit(enemy:Entity):void 
+		/*public function hit(enemy:Entity):void 
 		{
 			// Set our hurt timer
 			hurtTimer = 2;
@@ -156,14 +156,14 @@ package com.choomba.entities
 			
 			// Emit the damage particle effect at our current location
 			AxParticleSystem.emit("damage", center.x, center.y);
-		}
+		}*/
 		
 		/**
 		 * Returns whether or not we are hurt, by checking if hurtTimer > 0
 		 */
-		public function get hurt():Boolean 
+		/*public function get hurt():Boolean 
 		{
 			return hurtTimer > 0;
-		}
+		}*/
 	}
 }

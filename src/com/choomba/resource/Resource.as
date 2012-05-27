@@ -20,5 +20,15 @@ package com.choomba.resource
 		// ability slots
 		[Embed(source="assets/images/uidrag.png")]
 		public static const aslot:Class;
+		
+		/////////////////////////////////////////
+		// Particle
+		/////////////////////////////////////////
+		[Embed(source="assets/images/fire.png")]
+		public static const fire:Class;
+		[Embed(source="assets/images/blueflame.png")]
+		public static const blueflame:Class;
+		[Embed(source="assets/images/fireball.png")]
+		public static const fireball:Class;
 	}
 }

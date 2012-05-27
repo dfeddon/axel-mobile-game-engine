@@ -338,7 +338,7 @@ package org.axgl {
 		 * @param event The touch event.
 		 */
 		private function onTouchEnd(event:TouchEvent):void {
-			//trace("TOUCH END");
+			trace("TOUCH END");
 			// TODO: Implement actual touch controls
 			// For now, touching controls mouse x/y
 			mouse.update(event.stageX, event.stageY);

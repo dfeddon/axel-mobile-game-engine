@@ -1,5 +1,7 @@
 package com.choomba.util
 {
+	import com.choomba.components.ChStateMap;
+
 	/**
 	 * A utility class where we specify the size of our world and tiles. By doing this, 
 	 * and using these constants in our game, we could change the size of our tiles 
@@ -10,5 +12,7 @@ package com.choomba.util
 		public static const WIDTH:uint = 1600;
 		public static const HEIGHT:uint = 1600;
 		public static const TILE_SIZE:uint = 64;
+		
+		public static var GAMESTATE:ChStateMap;
 	}
 }

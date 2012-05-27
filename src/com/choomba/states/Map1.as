@@ -2,6 +2,7 @@ package com.choomba.states
 {
 	import com.choomba.components.ChStateMap;
 	import com.choomba.resource.Resource;
+	import com.choomba.util.World;
 	
 	import org.axgl.AxPoint;
 	
@@ -21,5 +22,6 @@ package com.choomba.states
 			
 			playerStart = new AxPoint(1, 1);
 		}
+		
 	}
 }
