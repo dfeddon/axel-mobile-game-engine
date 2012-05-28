@@ -39,7 +39,7 @@ package com.choomba.util
 			powerup.color(new AxColor(0, 0, 0), new AxColor(1, 1, 1), new AxColor(0, 0, 0), new AxColor(1, 1, 1));
 			(Ax.state as ChStateMap).particles.add(AxParticleSystem.register(powerup));
 			
-			var triangle:AxParticleEffect = new AxParticleEffect("poison", Resource.fireball, 40);
+			var triangle:AxParticleEffect = new AxParticleEffect("poison", Resource.poison, 40);
 			triangle.xVelocity = new AxRange(-30, 30);
 			triangle.yVelocity = new AxRange(-30, 30);
 			triangle.lifetime = new AxRange(0.5, 2.5);

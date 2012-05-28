@@ -108,6 +108,7 @@ package com.choomba.components
 			// Create our player
 			var pa:AxPoint = TileUtils.tileToCoord(playerStart.x, playerStart.y);
 			player = new Player(pa.x, pa.y);
+			World.PLAYER = player;
 			this.add(player);
 			
 			// init particle fx (must be done before adding UI state

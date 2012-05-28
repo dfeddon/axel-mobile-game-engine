@@ -1,6 +1,7 @@
 package com.choomba.util
 {
 	import com.choomba.components.ChStateMap;
+	import com.choomba.entities.Player;
 
 	/**
 	 * A utility class where we specify the size of our world and tiles. By doing this, 
@@ -14,5 +15,6 @@ package com.choomba.util
 		public static const TILE_SIZE:uint = 64;
 		
 		public static var GAMESTATE:ChStateMap;
+		public static var PLAYER:Player;
 	}
 }

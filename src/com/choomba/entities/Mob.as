@@ -1,6 +1,10 @@
 package com.choomba.entities 
 {
 	import com.choomba.resource.Resource;
+	import com.choomba.util.World;
+	
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import org.axgl.Ax;
 	import org.axgl.AxPoint;
@@ -12,22 +16,25 @@ package com.choomba.entities
 	/**
 	 * Our player entity that we control in the world.
 	 */
-	public class Player extends AxSprite 
+	public class Mob extends AxSprite
 	{
 		public var moveToPoint:AxPoint;
-		/**
-		 * A timer keeping track of whether (and how long) the player is hurt.
-		 */
+		
+		private var speed:Number;
+		
+		protected var isMoving:Boolean = false;
+		
 		public var hurtTimer:Number = 0;
 		
-		/**
-		 * Creates a new player.
-		 */
-		public function Player(x:uint, y:uint) 
+		public function Mob(tilex:uint, tiley:uint, image:Class, w:int = 64, h:int = 64, _speed:Number = 1, reactionTime:int = 1) 
 		{
-			super(x, y, Resource.PLAYER, 64, 64);
+			// convert tile to x/y coordinates
+			x = tilex * World.TILE_SIZE;
+			y = tiley * World.TILE_SIZE;
 			
-			maxVelocity = new AxVector(150, 150);
+			speed = _speed;
+			
+			super(x, y, image, w, h);
 			
 			addAnimation("standE", [8]);
 			addAnimation("standU", [26]);
@@ -36,14 +43,19 @@ package com.choomba.entities
 			addAnimation("walkS", [27, 28, 29, 30, 31, 32, 33, 34, 35], 15);
 			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 15);
 			
-			// Adjust bounding box
-			//bounds(16, 30, 4, 2);
-			// Add friction
-			/*drag = new AxVector(400, 300);
-			// Add the maximum velocity of our player
-			maxVelocity = new AxVector(150, 600);
-			// Add gravity
-			acceleration.y = 600;*/
+			moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
+			var moveTimer:Timer = new Timer(reactionTime * 1000, 0);
+			moveTimer.addEventListener(TimerEvent.TIMER, moveReady);
+			moveTimer.start();
+		}
+		
+		private function moveReady(e:TimerEvent):void
+		{
+			if (isMoving)
+			{
+				trace('reacting...');
+				moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
+			}
 		}
 		
 		override public function update():void 
@@ -56,29 +68,31 @@ package com.choomba.entities
 			{
 				if (moveToPoint.x > x) // moving right
 				{
-					x++;
+					x = x + speed;
 					xd = moveToPoint.x - x; // calculate difference between destination x and player x
 				}
 				else if (moveToPoint.x < x) // moving left
 				{
-					x--;
+					x = x - speed;
 					xd = x - moveToPoint.x; // calculate difference between player x and destination x
 				}
 				if (moveToPoint.y > y) // moving down
 				{
-					y++;
+					y = y + speed;
 					yd = moveToPoint.y - y; // calculate difference between destination y and player y
 				}
 				else if (moveToPoint.y < y) // moving up
 				{
-					y--;
+					y = y - speed;
 					yd = y - moveToPoint.y; // calculate difference between player x and destination x
 				}
 				
 				if (moveToPoint.x == x && moveToPoint.y == y) // player stopped
 				{
+					moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
+					isMoving = false;
 					// clear player's AxPoint
-					moveToPoint = null;
+					/*moveToPoint = null;
 					
 					// set standing animation
 					switch(facing)
@@ -95,10 +109,11 @@ package com.choomba.entities
 						case DOWN:
 							animate("standD");
 							break;
-					}
+					}*/
 				}
 				else // adjust walk animation (notably diagnonals) based on x, y differences
 				{
+					isMoving = true;
 					if (xd > yd)
 					{
 						if (moveToPoint.x > x)
@@ -125,10 +140,10 @@ package com.choomba.entities
 			
 			// If we're hurt, change our color to a dark red until hurtTimer has run out
 			/*if (hurt) {
-				hurtTimer -= Ax.dt;
-				setColor(1, 0.3, 0.3, 0.6);
+			hurtTimer -= Ax.dt;
+			setColor(1, 0.3, 0.3, 0.6);
 			} else {
-				setColor(1, 1, 1, 1);
+			setColor(1, 1, 1, 1);
 			}*/
 			
 			super.update();
@@ -139,21 +154,21 @@ package com.choomba.entities
 		 */
 		/*public function hit(enemy:Entity):void 
 		{
-			// Set our hurt timer
-			hurtTimer = 2;
-			
-			// Push us sideways based on which side of the enemy we were on
-			if (enemy.center.x > center.x) {
-				velocity.x = -200;
-			} else {
-				velocity.x = 200;
-			}
-			
-			// Push us up a bit to make us bounce
-			velocity.y = -100;
-			
-			// Emit the damage particle effect at our current location
-			AxParticleSystem.emit("damage", center.x, center.y);
+		// Set our hurt timer
+		hurtTimer = 2;
+		
+		// Push us sideways based on which side of the enemy we were on
+		if (enemy.center.x > center.x) {
+		velocity.x = -200;
+		} else {
+		velocity.x = 200;
+		}
+		
+		// Push us up a bit to make us bounce
+		velocity.y = -100;
+		
+		// Emit the damage particle effect at our current location
+		AxParticleSystem.emit("damage", center.x, center.y);
 		}*/
 		
 		/**
@@ -161,7 +176,7 @@ package com.choomba.entities
 		 */
 		/*public function get hurt():Boolean 
 		{
-			return hurtTimer > 0;
+		return hurtTimer > 0;
 		}*/
 	}
 }

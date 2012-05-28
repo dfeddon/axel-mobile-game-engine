@@ -28,7 +28,7 @@ package com.choomba.resource
 		public static const fire:Class;
 		[Embed(source="assets/images/blueflame.png")]
 		public static const blueflame:Class;
-		[Embed(source="assets/images/fireball.png")]
-		public static const fireball:Class;
+		[Embed(source="assets/images/poison.png")]
+		public static const poison:Class;
 	}
 }
