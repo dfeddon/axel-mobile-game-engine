@@ -18,12 +18,12 @@ package com.choomba.entities
 	 */
 	public class Mob extends AxSprite
 	{
-		public var moveToPoint:AxPoint;
-		
 		private var speed:Number;
 		
 		protected var isMoving:Boolean = false;
+		protected var moveTimer:Timer
 		
+		public var moveToPoint:AxPoint;
 		public var hurtTimer:Number = 0;
 		
 		public function Mob(tilex:uint, tiley:uint, image:Class, w:int = 64, h:int = 64, _speed:Number = 1, reactionTime:int = 1) 
@@ -44,7 +44,7 @@ package com.choomba.entities
 			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 15);
 			
 			moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
-			var moveTimer:Timer = new Timer(reactionTime * 1000, 0);
+			moveTimer = new Timer(reactionTime * 1000, 0);
 			moveTimer.addEventListener(TimerEvent.TIMER, moveReady);
 			moveTimer.start();
 		}
@@ -53,7 +53,7 @@ package com.choomba.entities
 		{
 			if (isMoving)
 			{
-				trace('reacting...');
+				trace('reacting...', this);
 				moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
 			}
 		}
@@ -147,6 +147,14 @@ package com.choomba.entities
 			}*/
 			
 			super.update();
+		}
+		
+		override public function destroy():void
+		{
+			// remove reaction time listener
+			moveTimer.removeEventListener(TimerEvent.TIMER, moveReady);
+			
+			super.destroy();
 		}
 		
 		/**

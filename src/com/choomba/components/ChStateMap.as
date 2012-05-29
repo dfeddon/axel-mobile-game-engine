@@ -19,7 +19,10 @@ package com.choomba.components
 	import org.axgl.AxRect;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
+	import org.axgl.collision.AxCollisionGroup;
+	import org.axgl.collision.AxGrid;
 	import org.axgl.input.AxMouseButton;
+	import org.axgl.particle.AxParticleCloud;
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxColor;
 	import org.axgl.tilemap.AxTile;
@@ -43,6 +46,7 @@ package com.choomba.components
 		protected var debug:Boolean = true;
 		protected var playerStart:AxPoint;
 		protected var ui:UIState;
+		//protected var particles:AxGroup;
 		
 		private var _map:DfTiledMap;
 		
@@ -50,7 +54,8 @@ package com.choomba.components
 		
 		public static var player:Player;
 		
-		public var particles:AxGroup = new AxGroup;
+		public var particles:AxGroup;
+		public var particlesCollider:AxCollisionGroup;
 		
 		public function ChStateMap()
 		{
@@ -66,6 +71,9 @@ package com.choomba.components
 			persistantDraw = true;
 			
 			stationary = true;
+			
+			particles = new AxGroup;
+			particlesCollider = new AxGrid(World.WIDTH, World.HEIGHT, 1, 1);
 			
 			//Ax.background = AxColor.fromHex(0x000000);
 			var background:AxSprite = new AxSprite(0, 0, bg);
@@ -112,6 +120,7 @@ package com.choomba.components
 			this.add(player);
 			
 			// init particle fx (must be done before adding UI state
+			//World.particles = particles;
 			this.add(particles);
 			Particle.initialize();
 			
@@ -188,6 +197,8 @@ package com.choomba.components
 		
 		override public function update():void
 		{
+			//if (cPart && !cPart.exists)
+				//cPart = null;
 			super.update();
 			//Ax.collide(player, DfTiledMap.wallLayer, testing, DfTiledMap.wallcollider);
 		}

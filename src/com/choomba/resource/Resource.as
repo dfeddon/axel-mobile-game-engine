@@ -30,5 +30,11 @@ package com.choomba.resource
 		public static const blueflame:Class;
 		[Embed(source="assets/images/poison.png")]
 		public static const poison:Class;
+		
+		/////////////////////////////////////////
+		// Mobs
+		/////////////////////////////////////////
+		[Embed(source="assets/images/mobSkel.png")]
+		public static const skeleton:Class;
 	}
 }
