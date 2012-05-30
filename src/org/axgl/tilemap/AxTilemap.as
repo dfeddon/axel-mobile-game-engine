@@ -63,7 +63,11 @@ package org.axgl.tilemap {
 		 * The frame used to calculate collisions against other objects.
 		 */
 		protected var frame:AxRect;
-
+		
+		/**
+		 * The properties to be passed into the layer
+		 */
+		private var _properties:Vector.<String> = new Vector.<String>;
 		/**
 		 * Creates a new tilemap at the location specified.
 		 * 
@@ -87,12 +91,14 @@ package org.axgl.tilemap {
 		 *
 		 * @return The tilemap object.
 		 */
-		public function build(mapString:String, graphic:Class, tileWidth:uint, tileHeight:uint, solidIndex:uint = 1):AxTilemap {
+		public function build(mapString:String, graphic:Class, tileWidth:uint, tileHeight:uint, solidIndex:uint = 1,properties:Vector.<String> = null):AxTilemap {
 			this.texture = AxCache.texture(graphic);
 			this.tileWidth = tileWidth;
 			this.tileHeight = tileHeight;
 			this.solidIndex = solidIndex;
 
+			this.properties = properties;
+			
 			this.tileCols = Math.floor(texture.rawWidth / tileWidth);
 			this.tileRows = Math.floor(texture.rawHeight / tileHeight);
 			this.tiles = new Vector.<AxTile>;
@@ -147,8 +153,9 @@ package org.axgl.tilemap {
 
 			tiles.push(null);
 			for (index = 1; index <= tileCols * tileRows; index++) { 
-				var tile:AxTile = new AxTile(this, index, tileWidth, tileHeight);
+				var tile:BwPropTile = new BwPropTile(this, index, tileWidth, tileHeight);
 				tile.collision = index >= solidIndex ? ANY : NONE;
+				tile.properties = properties;
 				tiles.push(tile);
 			}
 
@@ -307,5 +314,16 @@ package org.axgl.tilemap {
 			"tex ft0, v1, fs0 <2d,nearest,mipnone>",	// sample texture
 			"mul oc, fc0, ft0",							// multiply by color+alpha
 		];
+		
+		
+		public function get properties():Vector.<String>
+		{
+			return _properties;
+		}
+		
+		public function set properties(value:Vector.<String>):void
+		{
+			_properties = value;
+		}
 	}
 }
