@@ -24,6 +24,8 @@ package com.choomba.tiled
 		//public static var wallLayer:TmxLayer;
 		//public static var wallcollider:AxCollisionGroup;
 		
+		public var layers:Array = new Array();
+		
 		public function DfTiledMap(x:Number=0, y:Number=0)
 		{
 			super(x, y);
@@ -58,6 +60,7 @@ package com.choomba.tiled
 					lay = new AxTilemap();
 					gfx = tilesetBank.getTileSet(tlay.tilesetName);
 					lay.build(tlay.toCsv(),bitmapDataToClass(gfx),64,64);
+					layers.push(lay);
 					add(lay);
 				}
 				else
@@ -66,8 +69,8 @@ package com.choomba.tiled
 				}
 				
 			}
-			var test:AxTile = lay.getTile(54);
-			trace('testing');
+			/*var test:AxTile = lay.getTile(54);
+			trace('testing');*/
 		}
 		
 		private function bitmapDataToClass(bitmapData:BitmapData):Class

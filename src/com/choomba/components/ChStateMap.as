@@ -1,6 +1,7 @@
 package com.choomba.components
 {
 	import com.Ammarz.AxTiledMap.TilesetBank;
+	import com.choomba.entities.Mob;
 	import com.choomba.entities.Player;
 	import com.choomba.resource.Resource;
 	import com.choomba.states.UIState;
@@ -19,6 +20,7 @@ package com.choomba.components
 	import org.axgl.AxRect;
 	import org.axgl.AxSprite;
 	import org.axgl.AxState;
+	import org.axgl.collision.AxCollider;
 	import org.axgl.collision.AxCollisionGroup;
 	import org.axgl.collision.AxGrid;
 	import org.axgl.input.AxMouseButton;
@@ -26,6 +28,7 @@ package com.choomba.components
 	import org.axgl.particle.AxParticleSystem;
 	import org.axgl.render.AxColor;
 	import org.axgl.tilemap.AxTile;
+	import org.axgl.tilemap.AxTilemap;
 	
 	
 	public class ChStateMap extends AxState
@@ -46,16 +49,22 @@ package com.choomba.components
 		protected var debug:Boolean = true;
 		protected var playerStart:AxPoint;
 		protected var ui:UIState;
-		//protected var particles:AxGroup;
+		protected var mobGroup:AxGroup;
+		//protected var mobCollider:AxGrid;
+
+		//protected var sources:AxGroup;
 		
 		private var _map:DfTiledMap;
-		
+		//private var tilemapCollider:AxCollisionGroup;
 		private var _screenHalf:Number;
+		private var entities:AxGroup;
 		
 		public static var player:Player;
 		
+		public var sources:AxGroup;
 		public var particles:AxGroup;
 		public var particlesCollider:AxCollisionGroup;
+		public static const OBJECT_COLLISION:AxCollisionGroup = new AxGrid(World.WIDTH, World.HEIGHT);
 		
 		public function ChStateMap()
 		{
@@ -72,7 +81,7 @@ package com.choomba.components
 			
 			stationary = true;
 			
-			particles = new AxGroup;
+			sources = new AxGroup;
 			particlesCollider = new AxGrid(World.WIDTH, World.HEIGHT, 1, 1);
 			
 			//Ax.background = AxColor.fromHex(0x000000);
@@ -119,11 +128,14 @@ package com.choomba.components
 			World.PLAYER = player;
 			this.add(player);
 			
+			sources.add(player);
 			// init particle fx (must be done before adding UI state
-			//World.particles = particles;
-			this.add(particles);
+			//World.sources = sources;
+			this.add(sources);
+			particles = new AxGroup();
 			Particle.initialize();
 			
+			sources.add(particles);
 			// add UI layer
 			ui = new UIState();
 			Ax.pushState(ui);
@@ -132,11 +144,39 @@ package com.choomba.components
 			Ax.camera.follow(player);
 			Ax.camera.bounds = new AxRect(0, 0, World.WIDTH, World.HEIGHT);
 			
+			// tilemap
+			//tilemapCollider = new AxCollider();
+			/*for (var laynum:int = 0; laynum < _map.layers.length; laynum++)
+			{
+				var tiles:Vector.<AxTile> = AxTilemap(_map.layers[laynum]).getTiles([1]);
+				//Ax.collide(player, _map.layers[2], playerCollide, tilemapCollider);
+			}*/
+			
+			mobGroup = new AxGroup();
+			//mobCollider = new AxGrid(World.WIDTH, World.HEIGHT, 25, 25);
+			add(mobGroup);
+
+			entities = new AxGroup;
+			entities.add(mobGroup);
 			// listeners
 			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			//Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
 			Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
+		}
+		
+		protected function playerCollide(player:AxEntity, tile:AxEntity):void
+		{
+			trace('collide');
+			if (tile is AxTile)
+			{
+				trace('here!');
+			}
+		}
+		
+		protected function addMob(mob:Mob):void
+		{
+			trace('adding mob');
 		}
 		
 		/*private function clickHandler(e:MouseEvent):void
@@ -148,7 +188,7 @@ package com.choomba.components
 		{
 		}
 		
-		private function touchEndHandler(e:TouchEvent):void
+		protected function touchEndHandler(e:TouchEvent):void
 		{
 			trace('touch end', e.stageX, e.stageY, ui.slotActive);
 			
@@ -194,13 +234,44 @@ package com.choomba.components
 			trace('tapped');
 		}
 		
+		protected function sourceHit(source:AxEntity, target:AxEntity):void
+		{
+			trace('hit', source.width, source.height);
+			
+			if (source is Player && target is Mob)
+			{
+				AxParticleSystem.emit("vapor", player.x, player.y);
+				
+				// remove mob
+				source.destroy();
+				
+				return;
+			}
+			if (target is Mob)
+			{
+				// kill effect
+				AxParticleSystem.emit("vapor", target.x, target.y);
+				
+				// remove mob
+				target.destroy();
+				
+				// clear mob from group
+				mobGroup.cleanup();
+				
+				// clear sources from group
+				sources.cleanup();
+			}
+		}
 		
 		override public function update():void
 		{
-			//if (cPart && !cPart.exists)
-				//cPart = null;
+			// sources/entity collision
+			Ax.overlap(sources, entities, sourceHit, particlesCollider);// skelCollider);
+
+			//Ax.collide(entities, _map.layers[2]);//, playerCollide, tilemapCollider);
+			//Ax.overlap(player, entities, playerCollide, OBJECT_COLLISION);
+			
 			super.update();
-			//Ax.collide(player, DfTiledMap.wallLayer, testing, DfTiledMap.wallcollider);
 		}
 		
 		/*private function testing(entity1:AxEntity, entity2:AxEntity):void

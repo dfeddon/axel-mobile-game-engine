@@ -53,7 +53,7 @@ package com.choomba.entities
 		{
 			if (isMoving)
 			{
-				trace('reacting...', this);
+				//trace('reacting...', this);
 				moveToPoint = new AxPoint(World.PLAYER.x, World.PLAYER.y);
 			}
 		}
