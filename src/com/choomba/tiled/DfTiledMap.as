@@ -57,7 +57,13 @@ package com.choomba.tiled
 					}
 					lay = new AxTilemap();
 					gfx = tilesetBank.getTileSet(tlay.tilesetName);
-					lay.build(tlay.toCsv(),bitmapDataToClass(gfx),64,64);
+					/**push properties into layer**/
+					var tempVector:Vector.<String> = new Vector.<String>();
+					for each(var item:Object in tlay.properties)
+					{
+						tempVector.push(item);
+					}
+					lay.build(tlay.toCsv(),bitmapDataToClass(gfx),64,64,1,tempVector);
 					add(lay);
 				}
 				else
