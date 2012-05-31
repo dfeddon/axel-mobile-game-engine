@@ -13,11 +13,13 @@ package com.choomba.util
 	public class World 
 	{
 		public static const WIDTH:uint = 1600;
-		public static const HEIGHT:uint = 1600;
+		public static const HEIGHT:uint = 1664;
 		public static const TILE_SIZE:uint = 64;
 		
 		public static var GAMESTATE:ChStateMap;
 		public static var PLAYER:Player;
+		
+		public static var tilesetProperties:Array = new Array();
 		
 		//public static var particles:AxGroup;
 	}

@@ -155,7 +155,8 @@ package org.axgl.tilemap {
 			for (index = 1; index <= tileCols * tileRows; index++) { 
 				var tile:BwPropTile = new BwPropTile(this, index, tileWidth, tileHeight);
 				tile.collision = index >= solidIndex ? ANY : NONE;
-				tile.properties = properties;
+				//tile.properties = properties;
+				if (properties) trace(properties);
 				tiles.push(tile);
 			}
 

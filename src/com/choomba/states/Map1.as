@@ -36,7 +36,7 @@ package com.choomba.states
 		{
 			super.create();
 			
-			addSkel();
+			//addSkel();
 		}
 		
 		private function addSkel():void

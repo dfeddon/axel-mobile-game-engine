@@ -7,6 +7,8 @@ package net.pixelpracht.tmx
 {
 	public dynamic class TmxPropertySet
 	{
+		public var properties:Array = new Array();
+		
 		public function TmxPropertySet(source:XML)
 		{
 			extend(source);
@@ -14,11 +16,16 @@ package net.pixelpracht.tmx
 		
 		public function extend(source:XML):TmxPropertySet
 		{
+			var obj:Object;
 			for each (var prop:XML in source.property)
 			{
 				var key:String = prop.@name;
 				var value:String = prop.@value;
 				this[key] = value;
+				obj = new Object();
+				obj.key = key;
+				obj.value = value;
+				properties.push(obj);
 			}
 			return this;
 		}

@@ -29,6 +29,7 @@ package com.choomba.components
 	import org.axgl.render.AxColor;
 	import org.axgl.tilemap.AxTile;
 	import org.axgl.tilemap.AxTilemap;
+	import org.axgl.tilemap.BwPropTile;
 	
 	
 	public class ChStateMap extends AxState
@@ -50,6 +51,8 @@ package com.choomba.components
 		protected var playerStart:AxPoint;
 		protected var ui:UIState;
 		protected var mobGroup:AxGroup;
+		protected var tilemapCollideGroup:AxGroup;
+		private static var TILEMAP_COLLIDER:AxCollisionGroup;
 		//protected var mobCollider:AxGrid;
 
 		//protected var sources:AxGroup;
@@ -109,6 +112,18 @@ package com.choomba.components
 			
 			add(_map);
 			
+			// group collidable tilemaps
+			for (var ctm:int = 0; ctm < _map.layers.length; ctm++)
+			{
+				var tm:ChTilemap = _map.layers[ctm] as ChTilemap;
+				if (tm.isCollide())
+				{
+					if (!tilemapCollideGroup)
+						tilemapCollideGroup = new AxGroup(0, 0, World.WIDTH, World.HEIGHT);
+					
+					tilemapCollideGroup.add(tm);
+				}
+			}
 			//show Ax debug ui
 			if (debug)
 			{
@@ -136,6 +151,7 @@ package com.choomba.components
 			Particle.initialize();
 			
 			sources.add(particles);
+			
 			// add UI layer
 			ui = new UIState();
 			Ax.pushState(ui);
@@ -144,6 +160,8 @@ package com.choomba.components
 			Ax.camera.follow(player);
 			Ax.camera.bounds = new AxRect(0, 0, World.WIDTH, World.HEIGHT);
 			
+			//init collision detection
+			TILEMAP_COLLIDER = new AxCollider;
 			// tilemap
 			//tilemapCollider = new AxCollider();
 			/*for (var laynum:int = 0; laynum < _map.layers.length; laynum++)
@@ -160,8 +178,8 @@ package com.choomba.components
 			entities.add(mobGroup);
 			// listeners
 			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
-			//Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
-			Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+			Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
+			//Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
 			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
 		}
 		
@@ -179,21 +197,38 @@ package com.choomba.components
 			trace('adding mob');
 		}
 		
-		/*private function clickHandler(e:MouseEvent):void
+		private function clickHandler(e:MouseEvent):void
 		{
 			trace('clicked', e.localX, e.localY);
-		}*/
+			var point:AxPoint = new AxPoint(e.stageX + Ax.camera.x, e.stageY + Ax.camera.y);
+			
+			playerMove(point);
+		}
 		
 		private function mouseDownHandler(e:MouseEvent):void
 		{
+			/*var point:AxPoint = new AxPoint(e.stageX, e.stageY);
+			
+			playerMove(point);*/
 		}
 		
 		protected function touchEndHandler(e:TouchEvent):void
 		{
-			trace('touch end', e.stageX, e.stageY, ui.slotActive);
+			var point:AxPoint = new AxPoint(e.stageX + Ax.camera.x, e.stageY + Ax.camera.y);
+			
+			playerMove(point);
+		}
+		
+		protected function playerMove(pt:AxPoint):void
+		{
+			trace('touch end', pt.x, pt.y, ui.slotActive);
+			
+			// get tile
+			var tilePoint:AxPoint = TileUtils.pointToTile(new AxPoint(pt.x, pt.y));
+			var tile:BwPropTile = TileUtils.pointToTileIndex(new AxPoint(pt.x, pt.y), tilemapCollideGroup);
 			
 			// convert touch coordinates to center point of nearest tile
-			var touchPoint:AxPoint = TileUtils.touchToPoint(e.stageX, e.stageY);
+			var touchPoint:AxPoint = TileUtils.touchToPoint(pt.x, pt.y);
 			
 			Ax.mouse.update(touchPoint.x, touchPoint.y);
 			
@@ -224,8 +259,12 @@ package com.choomba.components
 			}
 			else
 			{
-				// move player to tile
-				player.moveToPoint = touchPoint;
+				// move player to tile (if tile is not collidable)
+				if (tile && tile.properties.layerCollide)
+				{
+					trace('** untouchable');
+				}
+				else player.moveToPoint = touchPoint;
 			}
 		}
 		
@@ -243,7 +282,7 @@ package com.choomba.components
 				AxParticleSystem.emit("vapor", player.x, player.y);
 				
 				// remove mob
-				source.destroy();
+				//source.destroy();
 				
 				return;
 			}
@@ -268,10 +307,16 @@ package com.choomba.components
 			// sources/entity collision
 			Ax.overlap(sources, entities, sourceHit, particlesCollider);// skelCollider);
 
+			Ax.collide(player, tilemapCollideGroup, null, TILEMAP_COLLIDER);
 			//Ax.collide(entities, _map.layers[2]);//, playerCollide, tilemapCollider);
 			//Ax.overlap(player, entities, playerCollide, OBJECT_COLLISION);
 			
 			super.update();
+		}
+		
+		protected function tileCollider(source:AxEntity, target:AxEntity):void
+		{
+			trace('here');
 		}
 		
 		/*private function testing(entity1:AxEntity, entity2:AxEntity):void

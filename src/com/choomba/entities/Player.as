@@ -14,6 +14,7 @@ package com.choomba.entities
 	 */
 	public class Player extends AxSprite 
 	{
+		protected var acc:int = 0;
 		public var moveToPoint:AxPoint;
 		/**
 		 * A timer keeping track of whether (and how long) the player is hurt.
@@ -32,50 +33,101 @@ package com.choomba.entities
 			addAnimation("standE", [8]);
 			addAnimation("standU", [26]);
 			addAnimation("standD", [35]);
-			addAnimation("walk", [0, 1, 2, 3, 4, 5, 6, 7, 8], 15);
-			addAnimation("walkS", [27, 28, 29, 30, 31, 32, 33, 34, 35], 15);
-			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 15);
+			addAnimation("walk", [0, 1, 2, 3, 4, 5, 6, 7, 8], 7);
+			addAnimation("walkS", [27, 28, 29, 30, 31, 32, 33, 34, 35], 7);
+			addAnimation("walkN", [18, 19, 20, 21, 22, 23, 24, 25, 26], 7);
 			
 			// Adjust bounding box
 			//bounds(16, 30, 4, 2);
 			// Add friction
-			/*drag = new AxVector(400, 300);
+			maxVelocity = new AxVector(220, 220);
+			drag = new AxVector(400, 400);
 			// Add the maximum velocity of our player
-			maxVelocity = new AxVector(150, 600);
+			
 			// Add gravity
-			acceleration.y = 600;*/
+			//acceleration.y = 100;
 		}
 		
 		override public function update():void 
 		{
+			/*if (moveToPoint)
+				trace(Math.round(x), Math.round(y), moveToPoint.x, moveToPoint.y);*/
 			// x and y difference values
 			var xd:int = 0;
 			var yd:int = 0;
 			
+			var v:int = 50;
+			
 			if (moveToPoint) // moving
 			{
+				if (acc < v)
+					acc = acc + .25;
 				if (moveToPoint.x > x) // moving right
 				{
-					x++;
-					xd = moveToPoint.x - x; // calculate difference between destination x and player x
+					facing = RIGHT;
+					if (this.isTouching(RIGHT))
+					{
+						moveToPoint = null;
+						velocity.x = 0;
+						velocity.y = 0;
+						acc=0;
+					}
+					else
+					{
+						velocity.x = v;
+						xd = moveToPoint.x - x; // calculate difference between destination x and player x
+					}
 				}
 				else if (moveToPoint.x < x) // moving left
 				{
-					x--;
-					xd = x - moveToPoint.x; // calculate difference between player x and destination x
+					facing = LEFT;
+					if (this.isTouching(LEFT))
+					{
+						moveToPoint = null;
+						velocity.x = 0;
+						velocity.y = 0;
+						acc=0;
+					}
+					else
+					{
+						velocity.x = -v;
+						xd = x - moveToPoint.x; // calculate difference between player x and destination x
+					}
 				}
-				if (moveToPoint.y > y) // moving down
+				if (moveToPoint && moveToPoint.y > y) // moving down
 				{
-					y++;
-					yd = moveToPoint.y - y; // calculate difference between destination y and player y
+					facing = DOWN;
+					if (this.isTouching(DOWN))
+					{
+						moveToPoint = null;
+						velocity.y = 0;
+						velocity.x = 0;
+						acc=0;
+					}
+					else
+					{
+						velocity.y = v;
+						yd = moveToPoint.y - y; // calculate difference between destination y and player y
+					}
 				}
-				else if (moveToPoint.y < y) // moving up
+				else if (moveToPoint && moveToPoint.y < y) // moving up
 				{
-					y--;
-					yd = y - moveToPoint.y; // calculate difference between player x and destination x
+					facing = UP;
+					if (this.isTouching(UP))
+					{
+						moveToPoint = null;
+						velocity.y = 0;
+						velocity.x = 0;
+						acc=0;
+					}
+					else
+					{
+						velocity.y = -v;
+						yd = y - moveToPoint.y; // calculate difference between player x and destination x
+					}
 				}
 				
-				if (moveToPoint.x == x && moveToPoint.y == y) // player stopped
+				if (!moveToPoint || (Math.round(x) == moveToPoint.x && Math.round(y) == moveToPoint.y)) // player stopped
 				{
 					// clear player's AxPoint
 					moveToPoint = null;
@@ -99,7 +151,7 @@ package com.choomba.entities
 				}
 				else // adjust walk animation (notably diagnonals) based on x, y differences
 				{
-					if (xd > yd)
+					if (moveToPoint && xd > yd)
 					{
 						if (moveToPoint.x > x)
 							facing = RIGHT;

@@ -218,14 +218,14 @@ package com.choomba.states
 			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
 			//Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
 			Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
+			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
 		}
 		
 		private function mouseDownHandler(e:MouseEvent):void
 		{
 		}
 		
-		private function touchEndHandler(e:TouchEvent):void
+/*		private function touchEndHandler(e:TouchEvent):void
 		{
 			trace('touch end', e.stageX, e.stageY, ui.slotActive);
 			
@@ -265,7 +265,7 @@ package com.choomba.states
 				player.moveToPoint = touchPoint;
 			}
 		}
-		
+*/		
 
 		
 		/*public override function create():void
