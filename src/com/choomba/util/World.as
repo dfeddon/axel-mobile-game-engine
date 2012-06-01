@@ -20,6 +20,7 @@ package com.choomba.util
 		public static var PLAYER:Player;
 		
 		public static var tilesetProperties:Array = new Array();
+		//public static var tilemapCollideGroup:AxGroup;
 		
 		//public static var particles:AxGroup;
 	}

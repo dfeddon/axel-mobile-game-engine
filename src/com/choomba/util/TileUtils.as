@@ -59,8 +59,10 @@ package com.choomba.util
 			{
 				lay = tilegroup.members[i] as ChTilemap;
 				id = tilePt.y * 25 + tilePt.x + 1;
-				trace('.id', id, tilePt.y * 25, tilePt.x+1);
+				//trace('.id', id, tilePt.y * 25, tilePt.x+1);
+				
 				tl = ChTilemap(lay).getTile(id) as BwPropTile;
+				
 				if (tl.properties && int(tl.properties.id) > 0)
 				{
 					tile = tl;

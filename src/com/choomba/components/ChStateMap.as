@@ -51,8 +51,8 @@ package com.choomba.components
 		protected var playerStart:AxPoint;
 		protected var ui:UIState;
 		protected var mobGroup:AxGroup;
-		protected var tilemapCollideGroup:AxGroup;
-		private static var TILEMAP_COLLIDER:AxCollisionGroup;
+		public var tilemapCollideGroup:AxGroup;
+		public var TILEMAP_COLLIDER:AxCollisionGroup;
 		//protected var mobCollider:AxGrid;
 
 		//protected var sources:AxGroup;
@@ -77,6 +77,8 @@ package com.choomba.components
 		override public function create():void
 		{
 			super.create();
+			
+			World.GAMESTATE = this;
 			
 			// Continue to update and draw this state when it's not the active state
 			persistantUpdate = true;
@@ -124,6 +126,7 @@ package com.choomba.components
 					tilemapCollideGroup.add(tm);
 				}
 			}
+			//World.tilemapCollideGroup = tilemapCollideGroup;
 			//show Ax debug ui
 			if (debug)
 			{
@@ -183,15 +186,6 @@ package com.choomba.components
 			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
 		}
 		
-		protected function playerCollide(player:AxEntity, tile:AxEntity):void
-		{
-			trace('collide');
-			if (tile is AxTile)
-			{
-				trace('here!');
-			}
-		}
-		
 		protected function addMob(mob:Mob):void
 		{
 			trace('adding mob');
@@ -199,8 +193,8 @@ package com.choomba.components
 		
 		private function clickHandler(e:MouseEvent):void
 		{
-			trace('clicked', e.localX, e.localY);
-			var point:AxPoint = new AxPoint(e.stageX + Ax.camera.x, e.stageY + Ax.camera.y);
+			var point:AxPoint = new AxPoint(Math.floor(e.stageX + Ax.camera.x), Math.floor(e.stageY + Ax.camera.y));
+			trace('clicked', point.x, point.y);
 			
 			playerMove(point);
 		}
@@ -214,14 +208,14 @@ package com.choomba.components
 		
 		protected function touchEndHandler(e:TouchEvent):void
 		{
-			var point:AxPoint = new AxPoint(e.stageX + Ax.camera.x, e.stageY + Ax.camera.y);
+			var point:AxPoint = new AxPoint(Math.floor(e.stageX + Ax.camera.x), Math.floor(e.stageY + Ax.camera.y));
 			
 			playerMove(point);
 		}
 		
 		protected function playerMove(pt:AxPoint):void
 		{
-			trace('touch end', pt.x, pt.y, ui.slotActive);
+			//trace('touch end', pt.x, pt.y, ui.slotActive);
 			
 			// get tile
 			var tilePoint:AxPoint = TileUtils.pointToTile(new AxPoint(pt.x, pt.y));
@@ -307,7 +301,7 @@ package com.choomba.components
 			// sources/entity collision
 			Ax.overlap(sources, entities, sourceHit, particlesCollider);// skelCollider);
 
-			Ax.collide(player, tilemapCollideGroup, null, TILEMAP_COLLIDER);
+			//Ax.collide(player, tilemapCollideGroup, null, TILEMAP_COLLIDER);
 			//Ax.collide(entities, _map.layers[2]);//, playerCollide, tilemapCollider);
 			//Ax.overlap(player, entities, playerCollide, OBJECT_COLLISION);
 			

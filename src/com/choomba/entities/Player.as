@@ -1,8 +1,11 @@
 package com.choomba.entities 
 {
 	import com.choomba.resource.Resource;
+	import com.choomba.states.GameState;
+	import com.choomba.util.World;
 	
 	import org.axgl.Ax;
+	import org.axgl.AxEntity;
 	import org.axgl.AxPoint;
 	import org.axgl.AxSprite;
 	import org.axgl.AxVector;
@@ -42,6 +45,9 @@ package com.choomba.entities
 			// Add friction
 			maxVelocity = new AxVector(220, 220);
 			drag = new AxVector(400, 400);
+			
+			// define bounding box
+			//this.bounds(59, 64, -5, 0);
 			// Add the maximum velocity of our player
 			
 			// Add gravity
@@ -57,11 +63,14 @@ package com.choomba.entities
 			var yd:int = 0;
 			
 			var v:int = 50;
-			
+			Ax.collide(this, World.GAMESTATE.tilemapCollideGroup, null, World.GAMESTATE.TILEMAP_COLLIDER);
 			if (moveToPoint) // moving
 			{
-				if (acc < v)
-					acc = acc + .25;
+				//Ax.collide(this, World.GAMESTATE.tilemapCollideGroup, null, World.GAMESTATE.TILEMAP_COLLIDER);
+
+				//trace('moveToPoint', moveToPoint.x, moveToPoint.y, moveToPoint.x + Ax.camera.x, x + Ax.camera.x, moveToPoint.y + Ax.camera.y, y + Ax.camera.y);
+				/*if (acc < v)
+					acc = acc + .25;*/
 				if (moveToPoint.x > x) // moving right
 				{
 					facing = RIGHT;
@@ -70,7 +79,7 @@ package com.choomba.entities
 						moveToPoint = null;
 						velocity.x = 0;
 						velocity.y = 0;
-						acc=0;
+						//acc=0;
 					}
 					else
 					{
@@ -86,7 +95,7 @@ package com.choomba.entities
 						moveToPoint = null;
 						velocity.x = 0;
 						velocity.y = 0;
-						acc=0;
+						//acc=0;
 					}
 					else
 					{
@@ -102,7 +111,7 @@ package com.choomba.entities
 						moveToPoint = null;
 						velocity.y = 0;
 						velocity.x = 0;
-						acc=0;
+						//acc=0;
 					}
 					else
 					{
@@ -118,7 +127,7 @@ package com.choomba.entities
 						moveToPoint = null;
 						velocity.y = 0;
 						velocity.x = 0;
-						acc=0;
+						//acc=0;
 					}
 					else
 					{
@@ -129,6 +138,10 @@ package com.choomba.entities
 				
 				if (!moveToPoint || (Math.round(x) == moveToPoint.x && Math.round(y) == moveToPoint.y)) // player stopped
 				{
+					if (moveToPoint)
+					{
+						trace('stopped!!!!', moveToPoint.x + Ax.camera.x, x + Ax.camera.x, moveToPoint.y + Ax.camera.y, y + Ax.camera.y);
+					}
 					// clear player's AxPoint
 					moveToPoint = null;
 					
@@ -184,6 +197,15 @@ package com.choomba.entities
 			}*/
 			
 			super.update();
+		}
+		
+		protected function playerCollide(player:AxEntity, tile:AxEntity):void
+		{
+			trace('collide', player, tile);
+			/*if (!tile is ChTilemap)
+			{
+				trace('here!');
+			}*/
 		}
 		
 		/**
