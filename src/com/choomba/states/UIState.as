@@ -1,7 +1,11 @@
 package com.choomba.states
 {
 	import com.choomba.resource.Resource;
+	import com.choomba.util.World;
 	
+	import flash.events.MouseEvent;
+	import flash.events.TouchEvent;
+	import flash.geom.Point;
 	import flash.profiler.showRedrawRegions;
 	
 	import org.axgl.Ax;
@@ -18,7 +22,7 @@ package com.choomba.states
 		private static const SLOT_SIZE:int = 100;
 		private static const DRAG_W:int = 100;
 		private static const DRAG_H:int = 125;
-		private static const DRAG_OFFSET:int = 15;
+		private static const DRAG_OFFSET:int = 0;//15;
 		
 		private var _slotActive:Boolean = false;
 		private var _slotSelected:String;
@@ -61,18 +65,21 @@ package com.choomba.states
 				screenH = fscreenH;
 			}
 			
+			World.SCREEN_WIDTH = screenW;
+			World.SCREEN_HEIGHT = screenH;
+			
 			// create background
 			//Ax.background = new AxColor(0, 0, 0);
 			
 			aslotTL = new AxSprite(-DRAG_OFFSET, -DRAG_OFFSET, Resource.aslot, SLOT_SIZE, SLOT_SIZE);
-			//aslotTL.scroll.x = aslotTL.scroll.y = 0;
+			aslotTL.scroll.x = aslotTL.scroll.y = 0;
 			aslotTL.stationary = true;
 			aslotTL.solid = false;
 			//aslotTL.scroll.x = aslotTL.scroll.y = 0;
 			add(aslotTL);
 			
 			aslotTR = new AxSprite(screenW - DRAG_W + DRAG_OFFSET, -DRAG_OFFSET, Resource.aslot, SLOT_SIZE, SLOT_SIZE);
-			//aslotTR.scroll.x = aslotTR.scroll.y = 0;
+			aslotTR.scroll.x = aslotTR.scroll.y = 0;
 			aslotTR.stationary = true;
 			aslotTR.solid = false;
 			//aslotTR.active = false;
@@ -80,7 +87,7 @@ package com.choomba.states
 			add(aslotTR);
 
 			aslotBL = new AxSprite(-DRAG_OFFSET, screenH - DRAG_H + DRAG_OFFSET, Resource.aslot, SLOT_SIZE, SLOT_SIZE);
-			//aslotBL.scroll.x = aslotBL.scroll.y = 0;
+			aslotBL.scroll.x = aslotBL.scroll.y = 0;
 			aslotBL.stationary = true;
 			aslotBL.solid = false;
 			//aslotBL.active = false;
@@ -88,7 +95,7 @@ package com.choomba.states
 			add(aslotBL);
 
 			aslotBR = new AxSprite(screenW - DRAG_W + DRAG_OFFSET, screenH - DRAG_H + DRAG_OFFSET, Resource.aslot, SLOT_SIZE, SLOT_SIZE);
-			//aslotBR.scroll.x = aslotBR.scroll.y = 0;
+			aslotBR.scroll.x = aslotBR.scroll.y = 0;
 			aslotBR.stationary = true;
 			aslotBR.solid = false;
 			//aslotBR.active = false;
@@ -108,7 +115,44 @@ package com.choomba.states
 			
 			// add it
 			add(btn);*/
-
+			
+			Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseClickHandler);
+			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_BEGIN, mouseClickHandler);
+		}
+		
+		private function mouseClickHandler(e:*):void
+		{
+			trace('**', e.localX, e.localY);
+			
+			if (slotActive) return;
+			else slotActive = true;
+			
+			if (e.localX <= 100 && e.localY <= 100)
+			{
+				MouseEvent(e).stopImmediatePropagation();
+				slotSelected = "TL";
+			}
+			else if (e.localX >= World.SCREEN_WIDTH - 100 && e.localY <= 100)
+			{
+				MouseEvent(e).stopImmediatePropagation();
+				slotSelected = "TR";
+			}
+			else if (e.localX <= 100 && e.localY >= World.SCREEN_HEIGHT - 100)
+			{
+				MouseEvent(e).stopImmediatePropagation();
+				slotSelected = "BR";
+			}
+			else if (e.localX >= World.SCREEN_WIDTH - 100 && e.localY >= World.SCREEN_HEIGHT - 100)
+			{
+				MouseEvent(e).stopImmediatePropagation();
+				slotSelected = "BL";
+			}
+			else 
+			{
+				slotActive = false;
+			}
+			
+			trace(slotActive, slotSelected);
 		}
 		
 		public static function deactivate():void
@@ -119,7 +163,7 @@ package com.choomba.states
 		
 		override public function update():void
 		{
-			aslotTL.x = -DRAG_OFFSET + Ax.camera.x;
+			/*aslotTL.x = -DRAG_OFFSET + Ax.camera.x;
 			aslotTL.y = -DRAG_OFFSET + Ax.camera.y;
 			
 			aslotTR.x = screenW - DRAG_W + DRAG_OFFSET + Ax.camera.x; 
@@ -129,9 +173,9 @@ package com.choomba.states
 			aslotBL.y = screenH - DRAG_H + DRAG_OFFSET + Ax.camera.y;
 			
 			aslotBR.x = screenW - DRAG_W + DRAG_OFFSET + Ax.camera.x;
-			aslotBR.y = screenH - DRAG_H + DRAG_OFFSET + Ax.camera.y;
+			aslotBR.y = screenH - DRAG_H + DRAG_OFFSET + Ax.camera.y;*/
 			
-			if (slotActive) return;
+			/*if (slotActive) return;
 
 			if (aslotTL.held())
 			{
@@ -156,7 +200,7 @@ package com.choomba.states
 				trace('!!!!!!!!!slotSelected BR held!');
 				slotActive = true;
 				slotSelected = "BR";
-			}
+			}*/
 			
 			super.update();
 			

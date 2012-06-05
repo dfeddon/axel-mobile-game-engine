@@ -27,16 +27,16 @@ package com.choomba.states
 			bg = Resource.bg1;
 			bgScroll = true;
 			
-			debug = true;
+			debug = false;
 			
-			playerStart = new AxPoint(1, 1);
+			playerStart = new AxPoint(2, 22);
 		}
 		
 		override public function create():void
 		{
 			super.create();
 			
-			addSkel();
+			//addSkel();
 		}
 		
 		private function addSkel():void

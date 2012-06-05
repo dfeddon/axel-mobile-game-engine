@@ -5,7 +5,7 @@ package com.choomba.components
 	import com.choomba.entities.Player;
 	import com.choomba.resource.Resource;
 	import com.choomba.states.UIState;
-	import com.choomba.tiled.DfTiledMap;
+	import com.choomba.tiled.ChTiledMap;
 	import com.choomba.util.Particle;
 	import com.choomba.util.TileUtils;
 	import com.choomba.util.World;
@@ -57,7 +57,7 @@ package com.choomba.components
 
 		//protected var sources:AxGroup;
 		
-		private var _map:DfTiledMap;
+		private var _map:ChTiledMap;
 		//private var tilemapCollider:AxCollisionGroup;
 		private var _screenHalf:Number;
 		private var entities:AxGroup;
@@ -95,7 +95,7 @@ package com.choomba.components
 				background.scroll.x = background.scroll.y = 0;
 			add(background);
 			
-			_map = new DfTiledMap();
+			_map = new ChTiledMap();
 			
 			/*
 			create a tile bank which should hold all the tilesets used in maps
@@ -147,9 +147,11 @@ package com.choomba.components
 			this.add(player);
 			
 			sources.add(player);
+			
 			// init particle fx (must be done before adding UI state
 			//World.sources = sources;
 			this.add(sources);
+			
 			particles = new AxGroup();
 			Particle.initialize();
 			
@@ -165,6 +167,7 @@ package com.choomba.components
 			
 			//init collision detection
 			TILEMAP_COLLIDER = new AxCollider;
+			
 			// tilemap
 			//tilemapCollider = new AxCollider();
 			/*for (var laynum:int = 0; laynum < _map.layers.length; laynum++)
@@ -173,17 +176,18 @@ package com.choomba.components
 				//Ax.collide(player, _map.layers[2], playerCollide, tilemapCollider);
 			}*/
 			
+			// add mobs
 			mobGroup = new AxGroup();
-			//mobCollider = new AxGrid(World.WIDTH, World.HEIGHT, 25, 25);
 			add(mobGroup);
-
+			//mobCollider = new AxGrid(World.WIDTH, World.HEIGHT, 25, 25);
+			
+			// entities (contains multiple groups)
 			entities = new AxGroup;
 			entities.add(mobGroup);
+			
 			// listeners
-			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_TAP, tapHandler);
-			Ax.stage2D.addEventListener(MouseEvent.CLICK, clickHandler);
-			//Ax.stage2D.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
-			Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, touchEndHandler);
+			Ax.stage2D.addEventListener(MouseEvent.MOUSE_UP, clickHandler);
+			//Ax.stage2D.addEventListener(TouchEvent.TOUCH_END, clickHandler);
 		}
 		
 		protected function addMob(mob:Mob):void
@@ -191,32 +195,16 @@ package com.choomba.components
 			trace('adding mob');
 		}
 		
-		private function clickHandler(e:MouseEvent):void
+		private function clickHandler(e:*):void
 		{
 			var point:AxPoint = new AxPoint(Math.floor(e.stageX + Ax.camera.x), Math.floor(e.stageY + Ax.camera.y));
-			trace('clicked', point.x, point.y);
+			trace('clicked', point.x, point.y, e.localX, e.localY);
 			
 			playerMove(point);
 		}
-		
-		private function mouseDownHandler(e:MouseEvent):void
-		{
-			/*var point:AxPoint = new AxPoint(e.stageX, e.stageY);
-			
-			playerMove(point);*/
-		}
-		
-		protected function touchEndHandler(e:TouchEvent):void
-		{
-			var point:AxPoint = new AxPoint(Math.floor(e.stageX + Ax.camera.x), Math.floor(e.stageY + Ax.camera.y));
-			
-			playerMove(point);
-		}
-		
+				
 		protected function playerMove(pt:AxPoint):void
 		{
-			//trace('touch end', pt.x, pt.y, ui.slotActive);
-			
 			// get tile
 			var tilePoint:AxPoint = TileUtils.pointToTile(new AxPoint(pt.x, pt.y));
 			var tile:BwPropTile = TileUtils.pointToTileIndex(new AxPoint(pt.x, pt.y), tilemapCollideGroup);

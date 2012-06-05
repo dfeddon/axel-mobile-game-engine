@@ -5,7 +5,7 @@ package com.choomba.states
 	import com.choomba.entities.BensPlayer;
 	import com.choomba.entities.Skeleton;
 	import com.choomba.resource.Resource;
-	import com.choomba.tiled.DfTiledMap;
+	import com.choomba.tiled.ChTiledMap;
 	import com.choomba.util.Particle;
 	import com.choomba.util.TileUtils;
 	import com.choomba.util.World;
@@ -99,7 +99,7 @@ package com.choomba.states
 		private static const GARBAGE_COLLECT_DELAY:Number = 5;
 		private var garbageCollectTimer:Number = GARBAGE_COLLECT_DELAY;
 		
-		private var _map:DfTiledMap;
+		private var _map:ChTiledMap;
 		private var _screenHalf:Number;
 		public static var player:BensPlayer;
 		/**Collision detection group for main map*/
@@ -160,7 +160,7 @@ package com.choomba.states
 				background.scroll.x = background.scroll.y = 0;
 			add(background);
 			
-			_map = new DfTiledMap();
+			_map = new ChTiledMap();
 			
 			/*
 			create a tile bank which should hold all the tilesets used in maps

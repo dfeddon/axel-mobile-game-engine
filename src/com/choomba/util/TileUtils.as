@@ -63,7 +63,12 @@ package com.choomba.util
 				
 				tl = ChTilemap(lay).getTile(id) as BwPropTile;
 				
-				if (tl.properties && int(tl.properties.id) > 0)
+				if (!tl)
+				{
+					trace('**no tile on layer', lay);
+					return null;
+				}
+				else if (tl.properties && int(tl.properties.id) > 0)
 				{
 					tile = tl;
 					
