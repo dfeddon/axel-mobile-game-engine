@@ -21,8 +21,8 @@ package com.choomba.states
 	{
 		private static const SLOT_SIZE:int = 100;
 		private static const DRAG_W:int = 100;
-		private static const DRAG_H:int = 125;
-		private static const DRAG_OFFSET:int = 0;//15;
+		private static const DRAG_H:int = 100;
+		private static const DRAG_OFFSET:int = 0;
 		
 		private var _slotActive:Boolean = false;
 		private var _slotSelected:String;
@@ -51,8 +51,8 @@ package com.choomba.states
 			stationary = true;
 			//active = true;
 			
-			var fscreenW:int = Ax.stage2D.stage.fullScreenWidth;
-			var fscreenH:int = Ax.stage2D.stage.fullScreenHeight;
+			var fscreenW:int = Ax.stage2D.stage.stageWidth;// .fullScreenWidth;
+			var fscreenH:int = Ax.stage2D.stage.stageHeight;//.fullScreenHeight;
 			
 			if (fscreenW < fscreenH)
 			{
