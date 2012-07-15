@@ -18,13 +18,23 @@
     <property name="wallType" value="5"/>
    </properties>
   </tile>
+  <tile id="11">
+   <properties>
+    <property name="collide" value="true"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="collide" value="true"/>
+   </properties>
+  </tile>
  </tileset>
- <layer name="scenery" width="25" height="25">
+ <layer name="walls" width="25" height="25">
   <properties>
-   <property name="" value=""/>
+   <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZBgFtAaKdDBfiQx71IBYHYg1gFiTSHtGwSgYBaNgFIyCUTA4AAALLgFG
+   eJzjZWBg4B1GGBsgRg0+QIydpNiBTZ7a/hjpdpACiLGDFmmT2v7ABkbtGLVjMNnBg4axiSFjcuzAVz7zoKmlxA5cgBQ7yKnPyLEDF6DEDmqkMWrGB7Hq8fljKGIAkD0Neg==
   </data>
  </layer>
  <layer name="foreground" width="25" height="25">
@@ -32,15 +42,15 @@
    <property name="collide" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBjZwGigHYADiAGxOBBLALEkHnUmaHxjmrmIPsBwoB0wCkbBKBgFo2AUDBEAAFXTASk=
+   eJxjYBjZwGigHYADiAGxOBBLALEkHnUmaHxjmrmIPsBwoB0wCkbBKBgwwE8ne9DLzaEIjNBofABWn4AAoTqFHMBLof7BWg8PBQAA3b0CbQ==
   </data>
  </layer>
- <layer name="walls" width="25" height="25">
+ <layer name="scenery" width="25" height="25">
   <properties>
-   <property name="collide" value="true"/>
+   <property name="" value=""/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYGBgYKMSxgUIyRFjBqnmIJs31Owg1v5RO6gDyIlzaucPWtsxCkbBKBgFo2D4AQAPCQJx
+   eJxjYBg4wDeAdlMKSHG7Is1cgTBfiQx71IBYHYg1gFiTSHuoAfhwsEfBKBgFo2A4AFh5rEQHe2htPrH+gNUnIEBsnTIKKAcAhgoDBw==
   </data>
  </layer>
 </map>

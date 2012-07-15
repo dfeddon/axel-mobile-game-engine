@@ -19,14 +19,14 @@ package com.choomba.components
 			super(x, y);
 		}
 		
-		override public function build(mapString:String, graphic:Class, tileWidth:uint, tileHeight:uint, solidIndex:uint=1, properties:Vector.<String>=null):AxTilemap
+		override public function build(mapString:String, graphic:Class, tileWidth:uint, tileHeight:uint, solidIndex:uint=1):AxTilemap
 		{
 			this.texture = AxCache.texture(graphic);
 			this.tileWidth = tileWidth;
 			this.tileHeight = tileHeight;
 			this.solidIndex = solidIndex;
 			
-			this.properties = properties;
+			//this.properties = properties;
 			
 			this.tileCols = Math.floor(texture.rawWidth / tileWidth);
 			this.tileRows = Math.floor(texture.rawHeight / tileHeight);

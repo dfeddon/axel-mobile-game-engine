@@ -138,6 +138,10 @@ package org.axgl {
 		 * The bounds limiting where this entity can move. If null, there are no bounds.
 		 */
 		public var worldBounds:AxRect;
+		/** Counter that allow you to disable counting this function's update for the debugger */
+		public var countUpdate:Boolean = true;
+		/** Counter that allow you to disable counting this function's draw for the debugger */
+		public var countDraw:Boolean = true;
 
 		/**
 		 * Creates a new AxEntity at the position passed.
@@ -296,6 +300,16 @@ package org.axgl {
 		 */
 		public function wasTouching(directions:uint):Boolean {
 			return (touched & directions) > NONE;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function overlaps(other:AxRect):Boolean {
+			if (!exists || (other is AxEntity && !(other as AxEntity).exists)) {
+				return false;
+			}
+			return super.overlaps(other);
 		}
 		
 		/**

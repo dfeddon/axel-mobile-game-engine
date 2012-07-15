@@ -78,7 +78,9 @@ package org.axgl {
 				}
 
 				entity.update();
-				Ax.debugger.updates++;
+				if (countUpdate) {
+					Ax.debugger.updates++;
+				}
 			}
 		}
 
@@ -94,8 +96,27 @@ package org.axgl {
 				}
 
 				entity.draw();
-				Ax.debugger.draws++;
+				if (countDraw) {
+					Ax.debugger.draws++;
+				}
 			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function overlaps(other:AxRect):Boolean {
+			if (!exists) {
+				return false;
+			}
+			
+			var overlapFound:Boolean = false;
+			for (var i:uint = 0; i < members.length; i++) {
+				if ((members[i] as AxEntity).exists && (members[i] as AxEntity).overlaps(other)) {
+					overlapFound = true;
+				}
+			}
+			return overlapFound;
 		}
 		
 		/**
@@ -148,12 +169,26 @@ package org.axgl {
 			tempMembers = temp;
 		}
 		
-		override public function dispose():void {
-			for (var i:uint = 0; i < members.length; i++) {
-				var entity:AxEntity = members[i];
-				entity.dispose();
+		/**
+		 * Removes all the objects from this group. If you pass in true, it will also dispose of those objects and clear them
+		 * from memory. If you reference the members in other groups or elsewhere, you should not pass true.
+		 */
+		public function clear(dispose:Boolean = false):AxGroup {
+			if (dispose) {
+				for (var i:uint = 0; i < members.length; i++) {
+					var entity:AxEntity = members[i];
+					entity.dispose();
+				}
 			}
-			
+			members.length = 0;
+			return this;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void {
+			clear(true);
 			members = null;
 			super.dispose();
 		}

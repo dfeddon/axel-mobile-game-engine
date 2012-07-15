@@ -213,17 +213,17 @@ package org.axgl {
 					var x4:Number = vertexData[ri3 + 0 ] - xo;
 					var y4:Number = vertexData[ri3 + 1 ] - yo;
 					
-					vertexData[ri0 + 0 ] = xo + ((x1 - ox) * sx - px + ox) * cos - ((y1 - oy) * sy - py + oy) * sin;
-					vertexData[ri0 + 1 ] = yo + ((x1 - ox) * sx - px + ox) * sin + ((y1 - oy) * sy - py + oy) * cos;
+					vertexData[ri0 + 0 ] = xo + ((x1 - ox + px) * sx - px + ox) * cos - ((y1 - oy + py) * sy - py + oy) * sin;
+					vertexData[ri0 + 1 ] = yo + ((x1 - ox + px) * sx - px + ox) * sin + ((y1 - oy + py) * sy - py + oy) * cos;
 					
-					vertexData[ri1 + 0 ] = xo + ((x2 - ox) * sx - px + ox) * cos - ((y2 - oy) * sy - py + oy) * sin;
-					vertexData[ri1 + 1 ] = yo + ((x2 - ox) * sx - px + ox) * sin + ((y2 - oy) * sy - py + oy) * cos;
+					vertexData[ri1 + 0 ] = xo + ((x2 - ox + px) * sx - px + ox) * cos - ((y2 - oy + py) * sy - py + oy) * sin;
+					vertexData[ri1 + 1 ] = yo + ((x2 - ox + px) * sx - px + ox) * sin + ((y2 - oy + py) * sy - py + oy) * cos;
 					
-					vertexData[ri2 + 0 ] = xo + ((x3 - ox) * sx - px + ox) * cos - ((y3 - oy) * sy - py + oy) * sin;
-					vertexData[ri2 + 1 ] = yo + ((x3 - ox) * sx - px + ox) * sin + ((y3 - oy) * sy - py + oy) * cos;
+					vertexData[ri2 + 0 ] = xo + ((x3 - ox + px) * sx - px + ox) * cos - ((y3 - oy + py) * sy - py + oy) * sin;
+					vertexData[ri2 + 1 ] = yo + ((x3 - ox + px) * sx - px + ox) * sin + ((y3 - oy + py) * sy - py + oy) * cos;
 					
-					vertexData[ri3 + 0 ] = xo + ((x4 - ox) * sx - px + ox) * cos - ((y4 - oy) * sy - py + oy) * sin;
-					vertexData[ri3 + 1 ] = yo + ((x4 - ox) * sx - px + ox) * sin + ((y4 - oy) * sy - py + oy) * cos;
+					vertexData[ri3 + 0 ] = xo + ((x4 - ox + px) * sx - px + ox) * cos - ((y4 - oy + py) * sy - py + oy) * sin;
+					vertexData[ri3 + 1 ] = yo + ((x4 - ox + px) * sx - px + ox) * sin + ((y4 - oy + py) * sy - py + oy) * cos;
 				}
 				
 				if (animates) {
@@ -288,7 +288,9 @@ package org.axgl {
 				}
 				
 				entity.update();
-				Ax.debugger.updates++;
+				if (countUpdate) {
+					Ax.debugger.updates++;
+				}
 			}
 		}
 		
@@ -312,7 +314,11 @@ package org.axgl {
 			matrix.appendTranslation(x - Math.round(Ax.camera.x), y - Math.round(Ax.camera.y), 0);
 			matrix.append(Ax.camera.projection);
 			
-			Ax.context.setProgram(shader.program);
+			if (shader != Ax.shader) {
+				Ax.context.setProgram(shader.program);
+				Ax.shader = shader;
+			}
+			
 			Ax.context.setTextureAt(0, texture.texture);
 			Ax.context.setBlendFactors(Context3DBlendFactor.SOURCE_ALPHA, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 			Ax.context.setProgramConstantsFromMatrix(Context3DProgramType.VERTEX, 0, matrix, true);
@@ -331,6 +337,23 @@ package org.axgl {
 			if (countTris) {
 				Ax.debugger.tris += triangles;
 			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function overlaps(other:AxRect):Boolean {
+			if (!exists) {
+				return false;
+			}
+			
+			var overlapFound:Boolean = false;
+			for (var i:uint = 0; i < members.length; i++) {
+				if ((members[i] as AxSprite).exists && (members[i] as AxSprite).overlaps(other)) {
+					overlapFound = true;
+				}
+			}
+			return overlapFound;
 		}
 		
 		/**
@@ -357,6 +380,9 @@ package org.axgl {
 			tempMembers.length = 0;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function dispose():void {
 			for (var i:uint = 0; i < members.length; i++) {
 				var entity:AxSprite = members[i];

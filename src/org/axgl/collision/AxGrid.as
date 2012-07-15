@@ -1,6 +1,8 @@
 package org.axgl.collision {
+	import org.axgl.AxCloud;
 	import org.axgl.AxEntity;
 	import org.axgl.AxGroup;
+	import org.axgl.AxSprite;
 	import org.axgl.tilemap.AxTilemap;
 
 	/**
@@ -82,7 +84,7 @@ package org.axgl.collision {
 		 */
 		override public function build(source:AxEntity, target:AxEntity):void {
 			if (source is AxTilemap || target is AxTilemap) {
-				throw new Error("Cannot use Spacial Hashing with a tilemap. Use AxUniversalAlgorithm instead.");
+				throw new Error("Cannot use Spacial Hashing with a tilemap. Use AxCollider instead.");
 			}
 
 			addAll(source, sourceList);
@@ -100,6 +102,13 @@ package org.axgl.collision {
 				for each (var o:AxEntity in members) {
 					if (o.active && o.exists) {
 						addToBucket(o);
+					}
+				}
+			} else if (object is AxCloud) {
+				var sprites:Vector.<AxSprite> = (object as AxCloud).members;
+				for each (var s:AxSprite in sprites) {
+					if (s.active && s.exists) {
+						addToBucket(s);
 					}
 				}
 			} else if (object != null) {
@@ -132,7 +141,9 @@ package org.axgl.collision {
 				var object:AxEntity = sourceList[i];
 				for (var x:uint = Math.max(0, object.x / cellWidth); x < Math.min(columns, (object.x + object.width) / cellWidth); x++) {
 					for (var y:uint = Math.max(0, object.y / cellHeight); y < Math.min(rows, (object.y + object.height) / cellHeight); y++) {
-						overlapFound ||= overlapFunction(object, grid[y * columns + x]);
+						if (overlapFunction(object, grid[y * columns + x])) {
+							overlapFound = true;
+						}
 					}
 				}
 			}

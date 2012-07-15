@@ -106,10 +106,10 @@ package org.axgl {
 				animate("idle");
 				labelOffset = 0;
 			}
-
-			label.y = labelY + labelOffset;
+			
 
 			if (label != null) {
+				label.y = labelY + labelOffset;
 				label.update();
 			}
 
@@ -123,6 +123,8 @@ package org.axgl {
 			super.draw();
 
 			if (label != null) {
+				label.scroll.x = scroll.x;
+				label.scroll.y = scroll.y;
 				label.draw();
 			}
 		}
